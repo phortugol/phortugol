@@ -1,0 +1,68 @@
+{
+    "name": "phortugol/phortugol",
+    "description": "A Portugol interpreter written in PHP — the educational pseudocode language used in VisuAlg",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "portugol",
+        "interpreter",
+        "visualg",
+        "education",
+        "php",
+        "parser",
+        "ast"
+    ],
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "you@example.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.5"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "pestphp/pest": "^3.0",
+        "phpstan/phpstan": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phortugol\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Phortugol\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "pest",
+        "test:coverage": "pest --coverage",
+        "analyse": "phpstan analyse",
+        "format": "pint",
+        "format:check": "pint --test",
+        "check": [
+            "@format:check",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Run the test suite",
+        "test:coverage": "Run the test suite with coverage report",
+        "analyse": "Run static analysis (PHPStan level 8)",
+        "format": "Fix code style (Pint psr12)",
+        "format:check": "Check code style without fixing",
+        "check": "Run format check, static analysis, and tests"
+    }
+}

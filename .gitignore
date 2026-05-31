@@ -1,0 +1,11 @@
+/vendor/
+/node_modules/
+/.phpunit.cache/
+/coverage/
+
+# Personal DDEV and Claude preferences
+CLAUDE.local.md
+.ddev/config.local.yaml
+
+# Build artifacts
+*.phar

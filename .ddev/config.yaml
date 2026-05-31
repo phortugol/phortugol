@@ -1,0 +1,13 @@
+name: phortugol
+type: php
+docroot: ""
+php_version: "8.5"
+webserver_type: nginx-fpm
+composer_version: "2"
+omit_containers: [db, dba]
+use_dns_when_possible: true
+xdebug_enabled: false
+
+hooks:
+  post-start:
+    - exec: composer install --no-interaction
