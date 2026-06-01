@@ -1,9 +1,13 @@
-# Phortugol
+<p align="center">
+  <img src="art/banner.svg" alt="Phortugol" width="900"/>
+</p>
 
-[![PHP Version](https://img.shields.io/badge/php-%5E8.5-blue)](https://www.php.net)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![PHPStan Level](https://img.shields.io/badge/phpstan-level%208-blueviolet)](https://phpstan.org)
-[![Tests](https://img.shields.io/badge/tests-pest-orange)](https://pestphp.com)
+<p align="center">
+  <a href="https://www.php.net"><img src="https://img.shields.io/badge/php-%5E8.5-blue" alt="PHP Version"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"/></a>
+  <a href="https://phpstan.org"><img src="https://img.shields.io/badge/phpstan-level%208-blueviolet" alt="PHPStan Level"/></a>
+  <a href="https://pestphp.com"><img src="https://img.shields.io/badge/tests-pest-orange" alt="Tests"/></a>
+</p>
 
 A Portugol interpreter written in PHP — the educational pseudocode language used in [VisuAlg](https://sourceforge.net/projects/visualg30/) and Brazilian CS classrooms.
 

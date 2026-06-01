@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" width="900" height="200">
+  <defs>
+    <linearGradient id="badge-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#5B21B6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Main background -->
+  <rect width="900" height="200" fill="#0D0D1F"/>
+
+  <!-- Subtle glow behind branding -->
+  <ellipse cx="660" cy="100" rx="230" ry="140" fill="#5B21B6" opacity="0.07"/>
+
+  <!-- ─── Terminal window ─── -->
+  <rect x="28" y="18" width="388" height="164" rx="10" fill="#13132A" stroke="#26264A" stroke-width="1"/>
+
+  <!-- Title bar -->
+  <rect x="28" y="18" width="388" height="28" rx="10" fill="#20203A"/>
+  <rect x="28" y="33" width="388" height="13" fill="#20203A"/>
+
+  <!-- Traffic lights -->
+  <circle cx="50"  cy="32" r="5" fill="#FF5F57"/>
+  <circle cx="66"  cy="32" r="5" fill="#FEBC2E"/>
+  <circle cx="82"  cy="32" r="5" fill="#28C840"/>
+
+  <!-- Window filename -->
+  <text x="222" y="37" text-anchor="middle"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="11" fill="#44446A">algoritmo.portugol</text>
+
+  <!-- ─── Code lines (12 px monospace) ─── -->
+  <!-- x=46  → no indent (column 0)       -->
+  <!-- x=60  → 2-space indent             -->
+  <!-- x=74  → 4-space indent             -->
+
+  <!-- algoritmo "fibonacci" -->
+  <text x="46" y="62"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12">
+    <tspan fill="#A78BFA">algoritmo </tspan><tspan fill="#34D399">"fibonacci"</tspan>
+  </text>
+
+  <!-- inicio -->
+  <text x="46" y="78"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12" fill="#A78BFA">inicio</text>
+
+  <!--   a <- 0 -->
+  <text x="60" y="94"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12">
+    <tspan fill="#E0E0F4">a </tspan><tspan fill="#60A5FA">&lt;-</tspan><tspan fill="#E0E0F4"> </tspan><tspan fill="#FB923C">0</tspan>
+  </text>
+
+  <!--   b <- 1 -->
+  <text x="60" y="110"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12">
+    <tspan fill="#E0E0F4">b </tspan><tspan fill="#60A5FA">&lt;-</tspan><tspan fill="#E0E0F4"> </tspan><tspan fill="#FB923C">1</tspan>
+  </text>
+
+  <!--   enquanto b < 100 faca -->
+  <text x="60" y="126"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12">
+    <tspan fill="#A78BFA">enquanto </tspan><tspan fill="#E0E0F4">b </tspan><tspan fill="#60A5FA">&lt;</tspan><tspan fill="#E0E0F4"> </tspan><tspan fill="#FB923C">100</tspan><tspan fill="#E0E0F4"> </tspan><tspan fill="#A78BFA">faca</tspan>
+  </text>
+
+  <!--     escreva b -->
+  <text x="74" y="142"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12">
+    <tspan fill="#A78BFA">escreva </tspan><tspan fill="#E0E0F4">b</tspan>
+  </text>
+
+  <!--   fimenquanto -->
+  <text x="60" y="158"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12" fill="#A78BFA">fimenquanto</text>
+
+  <!-- fimalgoritmo -->
+  <text x="46" y="174"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="12" fill="#A78BFA">fimalgoritmo</text>
+
+  <!-- ─── Branding (right) ─── -->
+
+  <!-- Icon badge -->
+  <rect x="454" y="44" width="70" height="70" rx="13" fill="url(#badge-grad)"/>
+  <text x="469" y="85"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="20" font-weight="700" fill="white">&gt;_</text>
+  <text x="472" y="103"
+        font-family="'SF Mono','Cascadia Code','Fira Code','Courier New',monospace"
+        font-size="10" fill="rgba(255,255,255,0.38)">ph</text>
+
+  <!-- Wordmark -->
+  <text x="538" y="88"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="40" font-weight="800" letter-spacing="-1.5">
+    <tspan fill="#A78BFA">ph</tspan><tspan fill="#EEEEFF">ortugol</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="538" y="111"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="14" fill="#48487A" letter-spacing="0.2">
+    A Portugol interpreter written in PHP
+  </text>
+
+  <!-- Badge pills -->
+  <rect x="538" y="130" width="66" height="21" rx="10.5" fill="#1A1A34"/>
+  <text x="571" y="145" text-anchor="middle"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="11" fill="#7C5CE8" font-weight="600">PHP 8.5</text>
+
+  <rect x="612" y="130" width="44" height="21" rx="10.5" fill="#1A1A34"/>
+  <text x="634" y="145" text-anchor="middle"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="11" fill="#7C5CE8" font-weight="600">MIT</text>
+
+  <rect x="664" y="130" width="80" height="21" rx="10.5" fill="#1A1A34"/>
+  <text x="704" y="145" text-anchor="middle"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="11" fill="#7C5CE8" font-weight="600">PHPStan 8</text>
+</svg>
