@@ -1,0 +1,61 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types = 1);
+
+use Phortugol\Exceptions\LexerException;
+use Phortugol\Exceptions\ParseException;
+use Phortugol\Exceptions\RuntimeException;
+use Phortugol\Interpreter\Runner;
+use Phortugol\Runtime\TerminalRuntime;
+
+(static function (): void {
+    $vendorPath = dirname(__DIR__) . '/vendor/autoload.php';
+    $localPath = dirname(__DIR__, 4) . '/vendor/autoload.php';
+
+    $autoload = match(true) {
+        file_exists($vendorPath) => $vendorPath,
+        file_exists($localPath) => $localPath,
+        default => null,
+    };
+
+    if ($autoload === null) {
+        fwrite(STDERR, "Autoloader not found. Run: composer install\n");
+        exit(1);
+    }
+
+    require_once $autoload;
+
+    $file = $_SERVER['argv'][1] ?? null;
+
+    if ($file === null) {
+        fwrite(STDERR, "Usage: phortugol <file.alg|file.por|file.portugol>\n");
+        exit(1);
+    }
+
+    if (! file_exists($file)) {
+        fwrite(STDERR, "File not found: {$file}\n");
+        exit(1);
+    }
+
+    $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+    if (! in_array($extension, ['alg', 'por', 'portugol'], strict: true)) {
+        fwrite(STDERR, "Unsupported file type: .{$extension}\nSupported: .alg, .por, .portugol\n");
+        exit(1);
+    }
+
+    $source = file_get_contents($file);
+
+    if ($source === false) {
+        fwrite(STDERR, "Could not read file: {$file}\n");
+        exit(1);
+    }
+
+    try {
+        Runner::create(new TerminalRuntime())->run($source);
+    } catch (LexerException | ParseException | RuntimeException $e) {
+        fwrite(STDERR, $e->getMessage() . "\n");
+        exit(1);
+    }
+})();

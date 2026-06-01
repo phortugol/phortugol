@@ -19,6 +19,9 @@
             "role": "Developer"
         }
     ],
+    "bin": [
+        "bin/phortugol"
+    ],
     "require": {
         "php": "^8.5"
     },
