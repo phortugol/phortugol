@@ -6,7 +6,10 @@ namespace Phortugol\Contracts;
 
 use Phortugol\Interpreter\Runner;
 
+/**
+ * @template-covariant TNode of Node
+ */
 interface NodeExecutor
 {
-    public function execute(Node $node, Runner $runner): void;
+    public function execute(Node $node, Runner $runner): mixed;
 }
