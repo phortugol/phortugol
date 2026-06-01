@@ -276,7 +276,7 @@ it('always appends an EOF token', function (): void {
 
 it('EOF token has empty lexeme', function (): void {
     $tokens = new Tokenizer('a')->tokenize();
-    $eof    = end($tokens);
+    $eof = end($tokens);
 
     expect($eof)->toBeInstanceOf(Token::class)
         ->and($eof->type)->toBe(TokenType::EOF)
