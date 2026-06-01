@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Phortugol\Parser\Statements;
+
+use Phortugol\Contracts\Parser\Statement;
+use Phortugol\Enums\TokenType;
+use Phortugol\Parser\Parser;
+use Phortugol\Parser\Nodes\WhileNode;
+use Phortugol\Parser\TokenStream;
+
+final class WhileStatement implements Statement
+{
+    public function parse(TokenStream $stream, Parser $parser): WhileNode
+    {
+        $stream->advance();
+        $condition = $parser->expression();
+        $stream->consume(TokenType::FACA, 'Expected "faca" after condition');
+
+        $body = $parser->block([TokenType::FIMENQUANTO]);
+
+        $stream->consume(TokenType::FIMENQUANTO, 'Expected "fimenquanto"');
+
+        return new WhileNode($condition, $body);
+    }
+}
