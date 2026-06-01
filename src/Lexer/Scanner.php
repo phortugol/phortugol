@@ -7,6 +7,9 @@ namespace Phortugol\Lexer;
 use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\LexerException;
 
+/**
+ * @phpstan-type ScannedToken array{TokenType, scalar | null}
+ */
 final class Scanner
 {
     private int $start = 0;
@@ -120,7 +123,7 @@ final class Scanner
     // ── Scanning ─────────────────────────────────────────────────────────────
 
     /**
-     * @return array{TokenType, string|int|float|bool|null}|null
+     * @return ScannedToken | null
      */
     public function scan(): array | null
     {
@@ -225,9 +228,6 @@ final class Scanner
         }
     }
 
-    /**
-     * @return null
-     */
     private function blockComment(): null
     {
         while ($this->peek !== '}' && ! $this->isAtEnd) {
@@ -293,7 +293,8 @@ final class Scanner
         }
 
         $lexeme = $this->slice;
-        $type   = Scanner::KEYWORDS[strtolower($lexeme)] ?? TokenType::IDENTIFIER;
+
+        $type = Scanner::KEYWORDS[strtolower($lexeme)] ?? TokenType::IDENTIFIER;
 
         $value = match ($type) {
             TokenType::VERDADEIRO => true,
@@ -306,7 +307,7 @@ final class Scanner
     }
 
     /**
-     * @return array{TokenType, string|int|float|bool|null}
+     * @return ScannedToken
      */
     private function defaultChar(string $char): array
     {
