@@ -7,11 +7,11 @@ namespace Phortugol\Interpreter;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\Runtime;
 
-final class Runner
+final readonly class Runner
 {
     public function __construct(
-        private readonly Runtime $runtime,
-        private readonly ExecutorDispatcher $dispatcher,
+        public Runtime $runtime,
+        private ExecutorDispatcher $dispatcher,
     ) {
     }
 
@@ -28,10 +28,5 @@ final class Runner
     public function execute(Node $node): void
     {
         $this->dispatcher->dispatch($node, $this);
-    }
-
-    public function runtime(): Runtime
-    {
-        return $this->runtime;
     }
 }
