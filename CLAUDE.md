@@ -81,7 +81,7 @@ Phortugol\Contracts\Node                   ← marker interface for all AST node
 Phortugol\Contracts\NodeExecutor           ← interface for node executors
 Phortugol\Contracts\Runtime               ← interface for I/O strategy
 
-Phortugol\Concerns\                        ← shared traits (e.g. HasCoercion)
+Phortugol\Concerns\                        ← traits for horizontal decomposition (HasCoercion, BinaryOperations…)
 
 Phortugol\Lexer\Tokenizer
 Phortugol\Lexer\Token

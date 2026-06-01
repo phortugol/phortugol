@@ -10,6 +10,30 @@ All interfaces live in `src/Contracts/` under `Phortugol\Contracts`:
 Concrete implementations live in their own modules (`Parser\Nodes\`, `Interpreter\Executors\`, `Runtime\`).
 Never place an interface outside `Contracts\` — follow the Pest/Saloon pattern.
 
+## Concerns — horizontal decomposition via traits
+
+Shared traits live in `src/Concerns/` under `Phortugol\Concerns`.
+
+The goal is **organizational clarity**, not just avoiding duplication. A trait is justified whenever a class has more than one identifiable responsibility — even if no other class uses that trait yet.
+
+This is inspired by how Filament and Laravel organize their internals: each trait encapsulates one concern, and the class becomes a thin composition of those concerns.
+
+### Naming conventions
+
+| Prefix | Meaning | Example |
+|---|---|---|
+| `Has` | the class possesses a set of related methods | `HasCoercion` |
+| *(none)* | a named set of operations belonging to a domain | `BinaryOperations` |
+
+Avoid `Can` (implies optional capability) and `As` (implies a role/adapter pattern).
+
+### Rules
+
+- A class with more than one responsibility is a candidate for trait extraction
+- Traits may `use` other traits to compose behavior (e.g. `BinaryOperations` uses `HasCoercion`)
+- Traits must never depend on concrete classes — only on PHP primitives and project exceptions
+- Never place a trait outside `Concerns\`
+
 ## Strict Boundaries
 
 - `src/` must never import from `Illuminate\`, `Symfony\`, or any framework namespace
