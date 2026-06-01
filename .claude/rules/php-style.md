@@ -16,6 +16,7 @@ Target PHP 8.5. Use modern features freely:
 - Property promotion
 - Readonly properties
 - Enums (TokenType is an enum)
+- `new Foo()->method()` — no outer parentheses needed (PHP 8.4+); never write `(new Foo())->method()`
 
 ## Class Modifiers
 
@@ -44,7 +45,10 @@ Target PHP 8.5. Use modern features freely:
 
 - PSR-12 standard (enforced by Pint)
 - Run `composer format` before committing
-- Strict types declared: `declare(strict_types=1);` in every file
+- Strict types declared with spaces: `declare(strict_types = 1);` (enforced by Pint)
+- Union types with spaces: `string | int | null` not `string|int|null` (enforced by Pint)
+- Space after negation: `! $var` not `!$var` (enforced by Pint)
+- Blank line between class properties (enforced by Pint)
 
 ## PHPDoc
 
