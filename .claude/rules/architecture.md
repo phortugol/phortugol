@@ -1,5 +1,15 @@
 # Architecture Rules
 
+## Contracts — the single source of truth for interfaces
+
+All interfaces live in `src/Contracts/` under `Phortugol\Contracts`:
+- `Phortugol\Contracts\Node` — marker interface; every AST node class implements this
+- `Phortugol\Contracts\NodeExecutor` — interface for executor classes
+- `Phortugol\Contracts\Runtime` — interface for I/O strategy (write/read)
+
+Concrete implementations live in their own modules (`Parser\Nodes\`, `Interpreter\Executors\`, `Runtime\`).
+Never place an interface outside `Contracts\` — follow the Pest/Saloon pattern.
+
 ## Strict Boundaries
 
 - `src/` must never import from `Illuminate\`, `Symfony\`, or any framework namespace
@@ -22,7 +32,7 @@ Each Node type has one dedicated `NodeExecutor` in `src/Interpreter/Executors/`.
 To add a new construct: create the executor, register it in `ExecutorDispatcher::default()`.
 Never touch `Runner` for this.
 
-`NodeExecutor` is an interface:
+`Phortugol\Contracts\NodeExecutor` is an interface:
 ```php
 interface NodeExecutor
 {
@@ -45,7 +55,7 @@ The `Runner` receives a `Runtime` via constructor injection. It must never:
 All AST node classes:
 - Live in `Phortugol\Parser\Nodes\`
 - Are `final readonly class`
-- Implement the `Node` marker interface
+- Implement the `Phortugol\Contracts\Node` marker interface
 - Have no methods — only constructor promoted properties
 
 ## Environment (variable scope)

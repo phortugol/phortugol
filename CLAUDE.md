@@ -26,7 +26,7 @@ Source code (string)
 Tokenizer        Phortugol\Lexer\Tokenizer
     ↓
 Parser           Phortugol\Parser\Parser
-    ↓             produces an AST (nodes in Phortugol\Parser\Nodes\)
+    ↓             produces an AST (node classes in Phortugol\Parser\Nodes\)
 Runner           Phortugol\Interpreter\Runner
     ↓             depends on a Runtime (Strategy Pattern)
 Output / Input
@@ -34,10 +34,10 @@ Output / Input
 
 ### Runtime — the core abstraction
 
-`Phortugol\Runtime\Runtime` is the single interface the `Runner` depends on. It defines how output is written and how input is read. This is a **Strategy Pattern** — the Runner knows nothing about Fibers, WebSockets, terminals, or Laravel.
+`Phortugol\Contracts\Runtime` is the single interface the `Runner` depends on. It defines how output is written and how input is read. This is a **Strategy Pattern** — the Runner knows nothing about Fibers, WebSockets, terminals, or Laravel.
 
 ```
-Runtime (interface)
+Contracts\Runtime (interface)
 ├── TerminalRuntime   — ships with core, uses echo + fgets(STDIN)
 ├── FakeRuntime       — ships with core, used in tests
 ├── FiberRuntime      — lives in laravel-plugin
@@ -77,22 +77,24 @@ Interpreter/
 ### Namespace map
 
 ```
+Phortugol\Contracts\Node                   ← marker interface for all AST nodes
+Phortugol\Contracts\NodeExecutor           ← interface for node executors
+Phortugol\Contracts\Runtime               ← interface for I/O strategy
+
 Phortugol\Lexer\Tokenizer
 Phortugol\Lexer\Token
 Phortugol\Lexer\TokenType
 
 Phortugol\Parser\Parser
-Phortugol\Parser\Nodes\                    ← all AST node classes live here
+Phortugol\Parser\Nodes\                    ← concrete AST node classes (implement Contracts\Node)
 
 Phortugol\Interpreter\Runner
 Phortugol\Interpreter\Environment
 Phortugol\Interpreter\ExecutorDispatcher
-Phortugol\Interpreter\NodeExecutor         ← interface
-Phortugol\Interpreter\Executors\           ← one class per Node type
+Phortugol\Interpreter\Executors\           ← one class per Node type (implement Contracts\NodeExecutor)
 
-Phortugol\Runtime\Runtime                  ← interface
-Phortugol\Runtime\TerminalRuntime
-Phortugol\Runtime\FakeRuntime
+Phortugol\Runtime\TerminalRuntime          ← implements Contracts\Runtime
+Phortugol\Runtime\FakeRuntime              ← implements Contracts\Runtime
 
 Phortugol\Exceptions\LexerException
 Phortugol\Exceptions\ParseException
