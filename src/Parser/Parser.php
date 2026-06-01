@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Phortugol\Parser;
 
 use Phortugol\Contracts\Node;
+use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\ParseException;
 use Phortugol\Lexer\Token;
-use Phortugol\Lexer\TokenType;
 use Phortugol\Parser\Nodes\AssignNode;
 use Phortugol\Parser\Nodes\BinaryNode;
 use Phortugol\Parser\Nodes\IfNode;

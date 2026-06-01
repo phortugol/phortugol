@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
+use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\LexerException;
 use Phortugol\Lexer\Token;
 use Phortugol\Lexer\Tokenizer;
-use Phortugol\Lexer\TokenType;
 
 // ---------------------------------------------------------------------------
 // Keywords

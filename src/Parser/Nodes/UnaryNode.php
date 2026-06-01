@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Phortugol\Parser\Nodes;
 
 use Phortugol\Contracts\Node;
-use Phortugol\Lexer\TokenType;
+use Phortugol\Enums\TokenType;
 
 final readonly class UnaryNode implements Node
 {

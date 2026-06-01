@@ -7,9 +7,9 @@ namespace Phortugol\Interpreter\Executors;
 use Phortugol\Concerns\BinaryOperations;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\NodeExecutor;
+use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Interpreter\Runner;
-use Phortugol\Lexer\TokenType;
 use Phortugol\Parser\Nodes\BinaryNode;
 
 /**

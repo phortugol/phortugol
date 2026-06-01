@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Phortugol\Lexer;
 
+use Phortugol\Enums\TokenType;
+
 final readonly class Token
 {
     public function __construct(

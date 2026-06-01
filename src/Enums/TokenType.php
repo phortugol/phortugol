@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Lexer;
+namespace Phortugol\Enums;
 
 enum TokenType: string
 {

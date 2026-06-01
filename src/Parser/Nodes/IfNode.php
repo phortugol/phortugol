@@ -15,7 +15,7 @@ final readonly class IfNode implements Node
     public function __construct(
         public Node $condition,
         public array $thenBranch,
-        public ?array $elseBranch,
+        public array | null $elseBranch,
     ) {
     }
 }

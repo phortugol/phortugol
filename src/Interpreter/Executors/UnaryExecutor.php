@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Phortugol\Interpreter\Executors;
 
+use Phortugol\Concerns\HasCoercion;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\NodeExecutor;
+use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\RuntimeException;
-use Phortugol\Concerns\HasCoercion;
 use Phortugol\Interpreter\Runner;
-use Phortugol\Lexer\TokenType;
 use Phortugol\Parser\Nodes\UnaryNode;
 
 /**
