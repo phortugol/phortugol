@@ -35,14 +35,14 @@ final readonly class Parser
         $this->stream->consume(type: TokenType::ALGORITMO, message: 'Expected "algoritmo"');
         $this->stream->consume(type: TokenType::STRING_LITERAL, message: 'Expected program name as string');
 
-        if ($this->stream->check(TokenType::VAR)) {
+        if ($this->stream->check(type: TokenType::VAR)) {
             $this->stream->advance();
             $this->skipVarSection();
         }
 
         $this->stream->consume(type: TokenType::INICIO, message: 'Expected "inicio"');
 
-        $statements = $this->block([TokenType::FIMALGORITMO]);
+        $statements = $this->block(stopAt: [TokenType::FIMALGORITMO]);
 
         $this->stream->consume(type: TokenType::FIMALGORITMO, message: 'Expected "fimalgoritmo"');
 
@@ -62,7 +62,7 @@ final readonly class Parser
     {
         $statements = [];
 
-        while (! $this->stream->isAtEnd && ! $this->stream->checkAny($stopAt)) {
+        while (! $this->stream->isAtEnd && ! $this->stream->checkAny(types: $stopAt)) {
             $statements[] = $this->statement();
         }
 
@@ -83,7 +83,7 @@ final readonly class Parser
 
     private function skipVarSection(): void
     {
-        while (! $this->stream->isAtEnd && ! $this->stream->check(TokenType::INICIO)) {
+        while (! $this->stream->isAtEnd && ! $this->stream->check(type: TokenType::INICIO)) {
             $this->stream->advance();
         }
     }
