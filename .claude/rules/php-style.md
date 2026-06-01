@@ -47,6 +47,8 @@ Target PHP 8.5. Use modern features freely:
 - Run `composer format` before committing
 - Strict types declared with spaces: `declare(strict_types = 1);` (enforced by Pint)
 - Union types with spaces: `string | int | null` not `string|int|null` (enforced by Pint)
+- Never use `?Type` shorthand — always write the full union with `null` last: `array | null` not `?array`
+- Order union types from most complex to simplest, `null` always last: `array | string | int | float | bool | null`
 - Space after negation: `! $var` not `!$var` (enforced by Pint)
 - Blank line between class properties (enforced by Pint)
 - Constructors always use multiline parameter format, even with a single parameter — trailing comma required (not enforced by Pint, apply manually):
