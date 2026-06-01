@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Phortugol\Interpreter\Executors;
 
+use Phortugol\Concerns\BinaryOperations;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\NodeExecutor;
 use Phortugol\Exceptions\RuntimeException;
-use Phortugol\Concerns\HasCoercion;
 use Phortugol\Interpreter\Runner;
 use Phortugol\Lexer\TokenType;
 use Phortugol\Parser\Nodes\BinaryNode;
@@ -17,7 +17,7 @@ use Phortugol\Parser\Nodes\BinaryNode;
  */
 final class BinaryExecutor implements NodeExecutor
 {
-    use HasCoercion;
+    use BinaryOperations;
 
     /**
      * @param BinaryNode $node
@@ -45,25 +45,4 @@ final class BinaryExecutor implements NodeExecutor
             default                  => throw new RuntimeException("Unknown binary operator: {$node->operator->value}"),
         };
     }
-
-    private function add(mixed $left, mixed $right): int | float | string
-    {
-        if (is_string($left) || is_string($right)) {
-            return ((string) $left) . ((string) $right);
-        }
-
-        return $this->asNumber($left) + $this->asNumber($right);
-    }
-
-    private function divide(mixed $left, mixed $right): int | float
-    {
-        $divisor = $this->asNumber($right);
-
-        if ($divisor == 0) {
-            throw new RuntimeException('Division by zero');
-        }
-
-        return $this->asNumber($left) / $divisor;
-    }
-
 }
