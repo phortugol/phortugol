@@ -7,6 +7,7 @@ namespace Phortugol\Interpreter\Executors;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\NodeExecutor;
 use Phortugol\Exceptions\RuntimeException;
+use Phortugol\Concerns\HasCoercion;
 use Phortugol\Interpreter\Runner;
 use Phortugol\Lexer\TokenType;
 use Phortugol\Parser\Nodes\BinaryNode;
@@ -16,6 +17,8 @@ use Phortugol\Parser\Nodes\BinaryNode;
  */
 final class BinaryExecutor implements NodeExecutor
 {
+    use HasCoercion;
+
     /**
      * @param BinaryNode $node
      */
@@ -63,25 +66,4 @@ final class BinaryExecutor implements NodeExecutor
         return $this->asNumber($left) / $divisor;
     }
 
-    private function asNumber(mixed $value): int | float
-    {
-        if (is_int($value) || is_float($value)) {
-            return $value;
-        }
-
-        throw new RuntimeException('Expected a number, got: ' . gettype($value));
-    }
-
-    private function asInt(mixed $value): int
-    {
-        if (is_int($value)) {
-            return $value;
-        }
-
-        if (is_float($value)) {
-            return (int) $value;
-        }
-
-        throw new RuntimeException('Expected an integer, got: ' . gettype($value));
-    }
 }

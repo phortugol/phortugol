@@ -7,6 +7,7 @@ namespace Phortugol\Interpreter\Executors;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\NodeExecutor;
 use Phortugol\Exceptions\RuntimeException;
+use Phortugol\Concerns\HasCoercion;
 use Phortugol\Interpreter\Runner;
 use Phortugol\Lexer\TokenType;
 use Phortugol\Parser\Nodes\UnaryNode;
@@ -16,6 +17,8 @@ use Phortugol\Parser\Nodes\UnaryNode;
  */
 final class UnaryExecutor implements NodeExecutor
 {
+    use HasCoercion;
+
     /**
      * @param UnaryNode $node
      */
@@ -28,14 +31,5 @@ final class UnaryExecutor implements NodeExecutor
             TokenType::NAO   => ! ((bool) $value),
             default          => throw new RuntimeException("Unknown unary operator: {$node->operator->value}"),
         };
-    }
-
-    private function asNumber(mixed $value): int | float
-    {
-        if (is_int($value) || is_float($value)) {
-            return $value;
-        }
-
-        throw new RuntimeException('Expected a number, got: ' . gettype($value));
     }
 }
