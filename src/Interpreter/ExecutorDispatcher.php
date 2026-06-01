@@ -28,29 +28,29 @@ use Phortugol\Parser\Nodes\VariableNode;
 use Phortugol\Parser\Nodes\WhileNode;
 use Phortugol\Parser\Nodes\WriteNode;
 
-final class ExecutorDispatcher
+final readonly class ExecutorDispatcher
 {
     /**
      * @param array<class-string<Node>, NodeExecutor<Node>> $executors
      */
     public function __construct(
-        private readonly array $executors = [],
+        private array $executors = [],
     ) {
     }
 
     public static function default(): self
     {
-        return (new self())
-            ->register(ProgramNode::class, new ProgramExecutor())
-            ->register(LiteralNode::class, new LiteralExecutor())
-            ->register(VariableNode::class, new VariableExecutor())
-            ->register(BinaryNode::class, new BinaryExecutor())
-            ->register(UnaryNode::class, new UnaryExecutor())
-            ->register(WriteNode::class, new WriteExecutor())
-            ->register(ReadNode::class, new ReadExecutor())
-            ->register(AssignNode::class, new AssignExecutor())
-            ->register(IfNode::class, new IfExecutor())
-            ->register(WhileNode::class, new WhileExecutor())
+        return new self()
+            ->register(class: ProgramNode::class, executor: new ProgramExecutor())
+            ->register(class: LiteralNode::class, executor: new LiteralExecutor())
+            ->register(class: VariableNode::class, executor: new VariableExecutor())
+            ->register(class: BinaryNode::class, executor: new BinaryExecutor())
+            ->register(class: UnaryNode::class, executor: new UnaryExecutor())
+            ->register(class: WriteNode::class, executor: new WriteExecutor())
+            ->register(class: ReadNode::class, executor: new ReadExecutor())
+            ->register(class: AssignNode::class, executor: new AssignExecutor())
+            ->register(class: IfNode::class, executor: new IfExecutor())
+            ->register(class: WhileNode::class, executor: new WhileExecutor())
         ;
     }
 
