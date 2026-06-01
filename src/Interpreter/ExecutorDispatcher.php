@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Phortugol\Interpreter;
 
@@ -27,7 +27,7 @@ final class ExecutorDispatcher
     {
         $class = $node::class;
 
-        if (!isset($this->executors[$class])) {
+        if (! isset($this->executors[$class])) {
             throw new RuntimeException("No executor registered for node type: {$class}");
         }
 
