@@ -1,51 +1,88 @@
 # Architecture Rules
 
-## Contracts — the single source of truth for interfaces
+## This is a Package, not an Application
 
-All interfaces live in `src/Contracts/` under `Phortugol\Contracts`:
-- `Phortugol\Contracts\Node` — marker interface; every AST node class implements this
-- `Phortugol\Contracts\NodeExecutor` — interface for executor classes
-- `Phortugol\Contracts\Runtime` — interface for I/O strategy (write/read)
+Phortugol is a **composer package**. There are no "services" in the application sense — no service containers, no service classes, no singleton lifecycles. Every class is either a value object, an AST node, an executor, a runtime, or a parser component. The traditional "service vs. value object" distinction does not apply here.
 
-Concrete implementations live in their own modules (`Parser\Nodes\`, `Interpreter\Executors\`, `Runtime\`).
-Never place an interface outside `Contracts\` — follow the Pest/Saloon pattern.
+## Class Design
 
-## Concerns — horizontal decomposition via traits
+- Use `final readonly class` everywhere possible — for nodes, token, executors, parsers, runtimes, and all other classes
+- The only reason to drop `readonly` is when a class truly needs mutable state (e.g., `Environment`, `Runner` with internal iteration state)
+- Interfaces use no prefix/suffix — `Runtime`, not `RuntimeInterface` or `IRuntime`
+- Exceptions extend `\RuntimeException` or `\InvalidArgumentException` — never the base `\Exception`
 
-Shared traits live in `src/Concerns/` under `Phortugol\Concerns`.
+## Contracts — namespaced to mirror their module
 
-The goal is **organizational clarity**, not just avoiding duplication. A trait is justified whenever a class has more than one identifiable responsibility — even if no other class uses that trait yet.
+Interfaces live in `src/Contracts/` under `Phortugol\Contracts`, **mirroring the module structure** of their implementations:
 
-This is inspired by how Filament and Laravel organize their internals: each trait encapsulates one concern, and the class becomes a thin composition of those concerns.
+```
+Phortugol\Contracts\Node                      ← marker interface for all AST nodes
+Phortugol\Contracts\Runtime                   ← I/O strategy interface
+Phortugol\Contracts\Parser\StatementParser    ← interface for statement parsers
+Phortugol\Contracts\Interpreter\NodeExecutor  ← interface for executors
+```
+
+Base-level contracts (`Contracts\Node`, `Contracts\Runtime`) are allowed when they look beautiful on import and have no natural sub-namespace. Sub-namespaced contracts (`Contracts\Parser\`, `Contracts\Interpreter\`) are preferred when grouping makes the import readable and intentional.
+
+Never place an interface outside `Contracts\`.
+
+## Concerns — code as craft
+
+Traits live in `src/Concerns/` under `Phortugol\Concerns`, **mirroring the module structure** of the classes that use them:
+
+```
+Phortugol\Concerns\Parser\Expression\ArithmeticPrecedence
+Phortugol\Concerns\Parser\Expression\PrecedenceHierarchy
+Phortugol\Concerns\Interpreter\HasCoercion
+Phortugol\Concerns\Interpreter\BinaryOperations
+```
+
+### The purpose of traits here is beauty, not utility
+
+Traits exist to make code **elegant, readable, and well-named** — not merely to avoid duplication. A trait is justified when:
+
+- A class grows beyond one screen and splitting it into named concerns makes it more beautiful to read
+- A name exists that perfectly describes a set of related methods
+- The class becomes a thin, expressive composition of well-named traits
+
+Even if no other class ever uses a trait, it is still worthwhile if it makes the composing class lovelier. The ideal class body is a list of `use` statements — nothing else.
+
+### Traits composing traits
+
+Traits may (and should) `use` other traits to build layered, composable behavior:
+
+```php
+trait BinaryOperations
+{
+    use HasCoercion;
+    // ...
+}
+```
+
+This is the preferred pattern for building depth: fine-grained traits composed into broader ones, composed into the final class.
 
 ### Naming conventions
 
 | Prefix | Meaning | Example |
 |---|---|---|
 | `Has` | the class possesses a set of related methods | `HasCoercion` |
-| *(none)* | a named set of operations belonging to a domain | `BinaryOperations` |
+| *(none)* | a named set of operations belonging to a domain | `BinaryOperations`, `ArithmeticPrecedence` |
 
 Avoid `Can` (implies optional capability) and `As` (implies a role/adapter pattern).
 
+Names must be **clear and beautiful to read** — a name that requires a comment to explain is not a good name.
+
 ### Rules
 
-- A class with more than one responsibility is a candidate for trait extraction
-- Traits may `use` other traits to compose behavior (e.g. `BinaryOperations` uses `HasCoercion`)
-- Traits must never depend on concrete classes — only on PHP primitives and project exceptions
 - Never place a trait outside `Concerns\`
+- Traits may depend on other traits and on project-internal types (e.g., `TokenStream`, `Node`) — the package is self-contained, so internal coupling inside `src/` is acceptable
+- Traits must never import from `Illuminate\`, `Symfony\`, or any framework namespace
 
 ## Strict Boundaries
 
 - `src/` must never import from `Illuminate\`, `Symfony\`, or any framework namespace
 - `src/` dependencies are: PHP 8.5 stdlib only
 - If a class needs Laravel, it belongs in `phortugol/laravel-plugin`, not here
-
-## Class Design
-
-- Use `final readonly class` for all value objects and AST nodes
-- Use `final class` for services (Tokenizer, Parser, Runner, Runtimes)
-- Interfaces use no prefix/suffix — `Runtime`, not `RuntimeInterface` or `IRuntime`
-- Exceptions extend `\RuntimeException` or `\InvalidArgumentException` — never the base `\Exception`
 
 ## The ExecutorDispatcher
 
@@ -56,7 +93,7 @@ Each Node type has one dedicated `NodeExecutor` in `src/Interpreter/Executors/`.
 To add a new construct: create the executor, register it in `ExecutorDispatcher::default()`.
 Never touch `Runner` for this.
 
-`Phortugol\Contracts\NodeExecutor` is an interface:
+`Phortugol\Contracts\Interpreter\NodeExecutor` is an interface:
 ```php
 interface NodeExecutor
 {
