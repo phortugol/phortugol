@@ -6,13 +6,18 @@ namespace Phortugol\Interpreter;
 
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\Runtime;
+use Phortugol\Lexer\Tokenizer;
+use Phortugol\Parser\Parser;
 
-final readonly class Runner
+final class Runner
 {
+    private(set) Environment $env;
+
     public function __construct(
-        public Runtime $runtime,
-        private ExecutorDispatcher $dispatcher,
+        public readonly Runtime $runtime,
+        private readonly ExecutorDispatcher $dispatcher,
     ) {
+        $this->env = new Environment();
     }
 
     public static function create(Runtime $runtime): self
@@ -22,11 +27,16 @@ final readonly class Runner
 
     public function run(string $code): void
     {
-        // TODO: tokenize → parse → execute
+        $this->env = new Environment();
+
+        $tokens = new Tokenizer($code)->tokenize();
+        $ast = new Parser($tokens)->parse();
+
+        $this->execute($ast);
     }
 
-    public function execute(Node $node): void
+    public function execute(Node $node): mixed
     {
-        $this->dispatcher->dispatch($node, $this);
+        return $this->dispatcher->dispatch($node, $this);
     }
 }
