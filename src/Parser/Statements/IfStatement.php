@@ -6,8 +6,8 @@ namespace Phortugol\Parser\Statements;
 
 use Phortugol\Contracts\Parser\Statement;
 use Phortugol\Enums\TokenType;
-use Phortugol\Parser\Parser;
 use Phortugol\Parser\Nodes\IfNode;
+use Phortugol\Parser\Parser;
 use Phortugol\Parser\TokenStream;
 
 final class IfStatement implements Statement

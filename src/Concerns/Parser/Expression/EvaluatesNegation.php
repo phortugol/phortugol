@@ -9,7 +9,9 @@ use Phortugol\Enums\TokenType;
 use Phortugol\Parser\Nodes\UnaryNode;
 use Phortugol\Parser\TokenStream;
 
-/** @phpstan-property TokenStream $stream */
+/**
+ * @phpstan-property TokenStream $stream
+ */
 trait EvaluatesNegation
 {
     protected function negation(): Node

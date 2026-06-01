@@ -55,7 +55,7 @@ final readonly class Parser
     }
 
     /**
-     * @param list<TokenType> $stopAt
+     * @param  list<TokenType> $stopAt
      * @return list<Node>
      */
     public function block(array $stopAt): array
@@ -74,10 +74,10 @@ final readonly class Parser
         return match (true) {
             $this->stream->check(TokenType::ESCREVA),
             $this->stream->check(TokenType::ESCREVAL) => new WriteStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::LEIA) => new ReadStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::SE) => new IfStatement()->parse($this->stream, $this),
+            $this->stream->check(TokenType::LEIA)     => new ReadStatement()->parse($this->stream, $this),
+            $this->stream->check(TokenType::SE)       => new IfStatement()->parse($this->stream, $this),
             $this->stream->check(TokenType::ENQUANTO) => new WhileStatement()->parse($this->stream, $this),
-            default => new AssignStatement()->parse($this->stream, $this),
+            default                                   => new AssignStatement()->parse($this->stream, $this),
         };
     }
 
