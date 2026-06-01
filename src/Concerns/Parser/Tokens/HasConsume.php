@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Concerns\Parser;
+namespace Phortugol\Concerns\Parser\Tokens;
 
 use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\ParseException;
 use Phortugol\Lexer\Token;
 
-trait ConsumesExpectedToken
+trait HasConsume
 {
     public function consume(TokenType $type, string $message): Token
     {

@@ -6,8 +6,8 @@ namespace Phortugol\Concerns\Parser;
 
 trait InteractsWithCursor
 {
-    use NavigatesTokens;
-    use ChecksTokenType;
-    use ConsumesExpectedToken;
-    use MatchesOptionalToken;
+    use Tokens\HasNavigation;
+    use Tokens\HasConsume;
+    use Tokens\ChecksType;
+    use Tokens\MatchesOptional;
 }

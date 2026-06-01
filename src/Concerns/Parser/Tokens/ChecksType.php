@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Concerns\Parser;
+namespace Phortugol\Concerns\Parser\Tokens;
 
 use Phortugol\Enums\TokenType;
 
-trait ChecksTokenType
+trait ChecksType
 {
     public function check(TokenType $type): bool
     {

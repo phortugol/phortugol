@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Concerns\Parser;
+namespace Phortugol\Concerns\Parser\Tokens;
 
 use Phortugol\Enums\TokenType;
 use Phortugol\Lexer\Token;
 
-trait NavigatesTokens
+trait HasNavigation
 {
     private int $current = 0;
 
