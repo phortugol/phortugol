@@ -12,6 +12,7 @@ use Phortugol\Concerns\Support\Parser\CanWhen;
 use Phortugol\Concerns\Support\Parser\HasOtherwise;
 use Phortugol\Concerns\Support\Parser\HasThen;
 use Phortugol\Contracts\Node;
+use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\IfNode;
 
 final class BranchBuilder
@@ -47,7 +48,7 @@ final class BranchBuilder
     public function build(): IfNode
     {
         return new IfNode(
-            $this->condition ?? throw new \LogicException('Branch condition not set — call when(), true(), false(), literal(), or variable() before build()'),
+            $this->condition ?? throw new RuntimeException('Branch condition not set — call when(), true(), false(), literal(), or variable() before build()'),
             $this->thenBranch,
             $this->elseBranch,
         );

@@ -11,6 +11,7 @@ use Phortugol\Concerns\Support\Parser\CanBeVariable;
 use Phortugol\Concerns\Support\Parser\CanWhen;
 use Phortugol\Concerns\Support\Parser\HasBody;
 use Phortugol\Contracts\Node;
+use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\WhileNode;
 
 final class LoopBuilder
@@ -40,7 +41,7 @@ final class LoopBuilder
     public function build(): WhileNode
     {
         return new WhileNode(
-            $this->condition ?? throw new \LogicException('Loop condition not set — call when(), true(), false(), literal(), or variable() before build()'),
+            $this->condition ?? throw new RuntimeException('Loop condition not set — call when(), true(), false(), literal(), or variable() before build()'),
             $this->body,
         );
     }
