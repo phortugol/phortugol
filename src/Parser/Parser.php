@@ -18,7 +18,7 @@ final readonly class Parser
 {
     private TokenStream $stream;
 
-    private Expression $expressions;
+    private Expression $expression;
 
     /**
      * @param list<Token> $tokens
@@ -27,7 +27,7 @@ final readonly class Parser
         array $tokens,
     ) {
         $this->stream = new TokenStream($tokens);
-        $this->expressions = new Expression($this->stream);
+        $this->expression = new Expression($this->stream);
     }
 
     public function parse(): ProgramNode
@@ -51,7 +51,7 @@ final readonly class Parser
 
     public function expression(): Node
     {
-        return $this->expressions->parse();
+        return $this->expression->parse();
     }
 
     /**
