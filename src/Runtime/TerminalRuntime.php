@@ -4,10 +4,16 @@ declare(strict_types = 1);
 
 namespace Phortugol\Runtime;
 
+use Phortugol\Contracts\Console\Presenter;
 use Phortugol\Contracts\Runtime;
 
-final class TerminalRuntime implements Runtime
+final readonly class TerminalRuntime implements Runtime
 {
+    public function __construct(
+        private Presenter $presenter,
+    ) {
+    }
+
     public function write(string $text): void
     {
         echo $text;
@@ -15,8 +21,6 @@ final class TerminalRuntime implements Runtime
 
     public function read(): string
     {
-        $line = fgets(STDIN);
-
-        return $line === false ? '' : trim($line);
+        return $this->presenter->ask();
     }
 }
