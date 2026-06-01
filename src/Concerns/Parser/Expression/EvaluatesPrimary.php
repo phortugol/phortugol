@@ -20,15 +20,15 @@ trait EvaluatesPrimary
     protected function primary(): Node
     {
         if ($this->stream->check(TokenType::INTEGER_LITERAL)) {
-            return new LiteralNode($this->tokenValue($this->stream->advance()));
+            return new LiteralNode($this->unwrap($this->stream->advance()));
         }
 
         if ($this->stream->check(TokenType::REAL_LITERAL)) {
-            return new LiteralNode($this->tokenValue($this->stream->advance()));
+            return new LiteralNode($this->unwrap($this->stream->advance()));
         }
 
         if ($this->stream->check(TokenType::STRING_LITERAL)) {
-            return new LiteralNode($this->tokenValue($this->stream->advance()));
+            return new LiteralNode($this->unwrap($this->stream->advance()));
         }
 
         if ($this->stream->check(TokenType::VERDADEIRO)) {

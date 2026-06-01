@@ -18,7 +18,7 @@ trait UnwrapsTokenValue
     use Expression\EvaluatesUnary;
     use Expression\EvaluatesPrimary;
 
-    protected function tokenValue(Token $token): int | float | string | bool
+    protected function unwrap(Token $token): int | float | string | bool
     {
         if ($token->value === null) {
             throw new ParseException("Expected literal value for token '{$token->lexeme}' at line {$token->line}");
