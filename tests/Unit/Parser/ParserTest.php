@@ -2,18 +2,11 @@
 
 declare(strict_types = 1);
 
+use Phortugol\Enums\TokenType;
 use Phortugol\Lexer\Tokenizer;
-use Phortugol\Parser\Nodes\AssignNode;
-use Phortugol\Parser\Nodes\BinaryNode;
-use Phortugol\Parser\Nodes\IfNode;
-use Phortugol\Parser\Nodes\LiteralNode;
 use Phortugol\Parser\Nodes\ProgramNode;
-use Phortugol\Parser\Nodes\ReadNode;
-use Phortugol\Parser\Nodes\UnaryNode;
-use Phortugol\Parser\Nodes\VariableNode;
-use Phortugol\Parser\Nodes\WhileNode;
-use Phortugol\Parser\Nodes\WriteNode;
 use Phortugol\Parser\Parser;
+use Phortugol\Support\Parser\Nodes;
 
 function parseSource(string $body): ProgramNode
 {
@@ -30,67 +23,57 @@ function parseSource(string $body): ProgramNode
 it('parses escreva as WriteNode without newline', function (): void {
     $ast = parseSource('escreva "hello"');
 
-    expect($ast->statements[0])->toBeInstanceOf(WriteNode::class)
-        ->and($ast->statements[0]->newline)->toBeFalse()
-        ->and($ast->statements[0]->expressions[0])->toBeInstanceOf(LiteralNode::class)
-        ->and($ast->statements[0]->expressions[0]->value)->toBe('hello');
+    expect($ast->statements[0])->toEqual(Nodes::write([Nodes::literal('hello')]));
 });
 
 it('parses escreval as WriteNode with newline', function (): void {
     $ast = parseSource('escreval "hello"');
 
-    expect($ast->statements[0])->toBeInstanceOf(WriteNode::class)
-        ->and($ast->statements[0]->newline)->toBeTrue();
+    expect($ast->statements[0])->toEqual(Nodes::writeln([Nodes::literal('hello')]));
 });
 
 it('parses escreva with parentheses', function (): void {
     $ast = parseSource('escreva("hello")');
 
-    expect($ast->statements[0])->toBeInstanceOf(WriteNode::class)
-        ->and($ast->statements[0]->expressions[0])->toBeInstanceOf(LiteralNode::class);
+    expect($ast->statements[0])->toEqual(Nodes::write([Nodes::literal('hello')]));
 });
 
 it('parses escreva with multiple expressions', function (): void {
     $ast = parseSource('escreva "a", "b", "c"');
 
-    expect($ast->statements[0])->toBeInstanceOf(WriteNode::class)
-        ->and($ast->statements[0]->expressions)->toHaveCount(3);
+    expect($ast->statements[0])->toEqual(
+        Nodes::write([Nodes::literal('a'), Nodes::literal('b'), Nodes::literal('c')]),
+    );
 });
 
 it('parses leia as ReadNode', function (): void {
     $ast = parseSource('leia x');
 
-    expect($ast->statements[0])->toBeInstanceOf(ReadNode::class)
-        ->and($ast->statements[0]->identifiers)->toBe(['x']);
+    expect($ast->statements[0])->toEqual(Nodes::read(['x']));
 });
 
 it('parses leia with multiple variables', function (): void {
     $ast = parseSource('leia x, y, z');
 
-    expect($ast->statements[0])->toBeInstanceOf(ReadNode::class)
-        ->and($ast->statements[0]->identifiers)->toBe(['x', 'y', 'z']);
+    expect($ast->statements[0])->toEqual(Nodes::read(['x', 'y', 'z']));
 });
 
 it('parses leia with parentheses', function (): void {
     $ast = parseSource('leia(x)');
 
-    expect($ast->statements[0])->toBeInstanceOf(ReadNode::class)
-        ->and($ast->statements[0]->identifiers)->toBe(['x']);
+    expect($ast->statements[0])->toEqual(Nodes::read(['x']));
 });
 
 it('parses assignment with arrow operator', function (): void {
     $ast = parseSource('x <- 42');
 
-    expect($ast->statements[0])->toBeInstanceOf(AssignNode::class)
-        ->and($ast->statements[0]->name)->toBe('x')
-        ->and($ast->statements[0]->value)->toBeInstanceOf(LiteralNode::class)
-        ->and($ast->statements[0]->value->value)->toBe(42);
+    expect($ast->statements[0])->toEqual(Nodes::assign('x', Nodes::literal(42)));
 });
 
 it('parses assignment with colon-equals operator', function (): void {
     $ast = parseSource('x := 42');
 
-    expect($ast->statements[0])->toBeInstanceOf(AssignNode::class);
+    expect($ast->statements[0])->toEqual(Nodes::assign('x', Nodes::literal(42)));
 });
 
 it('parses se/fimse without senao', function (): void {
@@ -100,9 +83,11 @@ it('parses se/fimse without senao', function (): void {
         fimse
         BODY);
 
-    expect($ast->statements[0])->toBeInstanceOf(IfNode::class)
-        ->and($ast->statements[0]->thenBranch)->toHaveCount(1)
-        ->and($ast->statements[0]->elseBranch)->toBeNull();
+    expect($ast->statements[0])->toEqual(
+        Nodes::branch()->true()
+            ->then(Nodes::write([Nodes::literal('yes')]))
+            ->build(),
+    );
 });
 
 it('parses se/senao/fimse', function (): void {
@@ -114,9 +99,12 @@ it('parses se/senao/fimse', function (): void {
         fimse
         BODY);
 
-    expect($ast->statements[0])->toBeInstanceOf(IfNode::class)
-        ->and($ast->statements[0]->thenBranch)->toHaveCount(1)
-        ->and($ast->statements[0]->elseBranch)->toHaveCount(1);
+    expect($ast->statements[0])->toEqual(
+        Nodes::branch()->true()
+            ->then(Nodes::write([Nodes::literal('yes')]))
+            ->otherwise(Nodes::write([Nodes::literal('no')]))
+            ->build(),
+    );
 });
 
 it('parses enquanto/fimenquanto', function (): void {
@@ -126,43 +114,41 @@ it('parses enquanto/fimenquanto', function (): void {
         fimenquanto
         BODY);
 
-    expect($ast->statements[0])->toBeInstanceOf(WhileNode::class)
-        ->and($ast->statements[0]->body)->toHaveCount(1);
+    expect($ast->statements[0])->toEqual(
+        Nodes::loop()->false()
+            ->body(Nodes::write([Nodes::literal('loop')]))
+            ->build(),
+    );
 });
 
 it('parses binary expression', function (): void {
     $ast = parseSource('x <- 1 + 2');
 
-    $assign = $ast->statements[0];
-    expect($assign)->toBeInstanceOf(AssignNode::class)
-        ->and($assign->value)->toBeInstanceOf(BinaryNode::class);
+    expect($ast->statements[0])->toEqual(
+        Nodes::assign('x', Nodes::binary(Nodes::literal(1), TokenType::PLUS, Nodes::literal(2))),
+    );
 });
 
 it('parses unary minus', function (): void {
     $ast = parseSource('x <- -5');
 
-    $assign = $ast->statements[0];
-    expect($assign)->toBeInstanceOf(AssignNode::class)
-        ->and($assign->value)->toBeInstanceOf(UnaryNode::class)
-        ->and($assign->value->right)->toBeInstanceOf(LiteralNode::class)
-        ->and($assign->value->right->value)->toBe(5);
+    expect($ast->statements[0])->toEqual(
+        Nodes::assign('x', Nodes::unary(TokenType::MINUS, Nodes::literal(5))),
+    );
 });
 
 it('parses variable reference', function (): void {
     $ast = parseSource('x <- y');
 
-    $assign = $ast->statements[0];
-    expect($assign)->toBeInstanceOf(AssignNode::class)
-        ->and($assign->value)->toBeInstanceOf(VariableNode::class)
-        ->and($assign->value->name)->toBe('y');
+    expect($ast->statements[0])->toEqual(Nodes::assign('x', Nodes::variable('y')));
 });
 
 it('parses parenthesized expression', function (): void {
     $ast = parseSource('x <- (1 + 2)');
 
-    $assign = $ast->statements[0];
-    expect($assign)->toBeInstanceOf(AssignNode::class)
-        ->and($assign->value)->toBeInstanceOf(BinaryNode::class);
+    expect($ast->statements[0])->toEqual(
+        Nodes::assign('x', Nodes::binary(Nodes::literal(1), TokenType::PLUS, Nodes::literal(2))),
+    );
 });
 
 it('parses program with var section', function (): void {
@@ -177,5 +163,5 @@ it('parses program with var section', function (): void {
 
     $ast = new Parser(new Tokenizer($source)->tokenize())->parse();
 
-    expect($ast->statements[0])->toBeInstanceOf(WriteNode::class);
+    expect($ast->statements[0])->toEqual(Nodes::write([Nodes::literal('hello')]));
 });
