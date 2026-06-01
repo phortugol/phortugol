@@ -51,7 +51,7 @@ trait EvaluatesPrimary
 
         if ($this->stream->match(TokenType::LEFT_PAREN)) {
             $expr = $this->parse();
-            $this->stream->consume(TokenType::RIGHT_PAREN, 'Expected ")" after expression');
+            $this->stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after expression');
 
             return $expr;
         }

@@ -14,9 +14,9 @@ final class AssignStatement implements Statement
 {
     public function parse(TokenStream $stream, Parser $parser): AssignNode
     {
-        $name = $stream->consume(TokenType::IDENTIFIER, 'Expected variable name');
+        $name = $stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name');
 
-        $stream->consume(TokenType::ASSIGN, 'Expected "<-" or ":=" after variable name');
+        $stream->consume(type: TokenType::ASSIGN, message: 'Expected "<-" or ":=" after variable name');
 
         return new AssignNode($name->lexeme, $parser->expression());
     }

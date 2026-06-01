@@ -16,11 +16,11 @@ final class WhileStatement implements Statement
     {
         $stream->advance();
         $condition = $parser->expression();
-        $stream->consume(TokenType::FACA, 'Expected "faca" after condition');
+        $stream->consume(type: TokenType::FACA, message: 'Expected "faca" after condition');
 
         $body = $parser->block([TokenType::FIMENQUANTO]);
 
-        $stream->consume(TokenType::FIMENQUANTO, 'Expected "fimenquanto"');
+        $stream->consume(type: TokenType::FIMENQUANTO, message: 'Expected "fimenquanto"');
 
         return new WhileNode($condition, $body);
     }

@@ -16,7 +16,7 @@ final class IfStatement implements Statement
     {
         $stream->advance();
         $condition = $parser->expression();
-        $stream->consume(TokenType::ENTAO, 'Expected "entao" after condition');
+        $stream->consume(type: TokenType::ENTAO, message: 'Expected "entao" after condition');
 
         $thenBranch = $parser->block([TokenType::SENAO, TokenType::FIMSE]);
 
@@ -26,7 +26,7 @@ final class IfStatement implements Statement
             $elseBranch = $parser->block([TokenType::FIMSE]);
         }
 
-        $stream->consume(TokenType::FIMSE, 'Expected "fimse"');
+        $stream->consume(type: TokenType::FIMSE, message: 'Expected "fimse"');
 
         return new IfNode($condition, $thenBranch, $elseBranch);
     }

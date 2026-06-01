@@ -17,14 +17,14 @@ final class ReadStatement implements Statement
         $stream->advance();
 
         $hasParen = $stream->match(TokenType::LEFT_PAREN);
-        $identifiers = [$stream->consume(TokenType::IDENTIFIER, 'Expected variable name')->lexeme];
+        $identifiers = [$stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name')->lexeme];
 
         while ($stream->match(TokenType::COMMA)) {
-            $identifiers[] = $stream->consume(TokenType::IDENTIFIER, 'Expected variable name')->lexeme;
+            $identifiers[] = $stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name')->lexeme;
         }
 
         if ($hasParen) {
-            $stream->consume(TokenType::RIGHT_PAREN, 'Expected ")" after leia arguments');
+            $stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after leia arguments');
         }
 
         return new ReadNode($identifiers);

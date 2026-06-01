@@ -32,19 +32,19 @@ final readonly class Parser
 
     public function parse(): ProgramNode
     {
-        $this->stream->consume(TokenType::ALGORITMO, 'Expected "algoritmo"');
-        $this->stream->consume(TokenType::STRING_LITERAL, 'Expected program name as string');
+        $this->stream->consume(type: TokenType::ALGORITMO, message: 'Expected "algoritmo"');
+        $this->stream->consume(type: TokenType::STRING_LITERAL, message: 'Expected program name as string');
 
         if ($this->stream->check(TokenType::VAR)) {
             $this->stream->advance();
             $this->skipVarSection();
         }
 
-        $this->stream->consume(TokenType::INICIO, 'Expected "inicio"');
+        $this->stream->consume(type: TokenType::INICIO, message: 'Expected "inicio"');
 
         $statements = $this->block([TokenType::FIMALGORITMO]);
 
-        $this->stream->consume(TokenType::FIMALGORITMO, 'Expected "fimalgoritmo"');
+        $this->stream->consume(type: TokenType::FIMALGORITMO, message: 'Expected "fimalgoritmo"');
 
         return new ProgramNode($statements);
     }

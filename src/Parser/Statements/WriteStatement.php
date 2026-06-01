@@ -25,7 +25,7 @@ final class WriteStatement implements Statement
         }
 
         if ($hasParen) {
-            $stream->consume(TokenType::RIGHT_PAREN, 'Expected ")" after escreva arguments');
+            $stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after escreva arguments');
         }
 
         return new WriteNode($expressions, $newline);
