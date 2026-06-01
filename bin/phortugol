@@ -3,8 +3,7 @@
 
 declare(strict_types = 1);
 
-use Phortugol\Console\Kernel;
-use Phortugol\Console\Presenters\TermwindPresenter;
+use Symfony\Component\Console\Input\ArgvInput;
 
 $vendorPath = dirname(__DIR__) . '/vendor/autoload.php';
 $localPath = dirname(__DIR__, 4) . '/vendor/autoload.php';
@@ -22,4 +21,6 @@ if ($autoload === null) {
 
 require_once $autoload;
 
-exit(new Kernel(new TermwindPresenter())->handle($_SERVER['argv']));
+$kernel = require_once dirname(__DIR__) . '/bootstrap/terminal.php';
+
+exit($kernel->handle(new ArgvInput()));

@@ -24,7 +24,8 @@
     ],
     "require": {
         "php": "^8.5",
-        "nunomaduro/termwind": "^2.4"
+        "nunomaduro/termwind": "^2.4",
+        "symfony/console": "^8.1"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
