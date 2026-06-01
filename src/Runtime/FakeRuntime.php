@@ -14,20 +14,14 @@ final class FakeRuntime implements Runtime
      */
     public array $output = [];
 
-    /**
-     * @var list<string>
-     */
-    private array $inputs;
-
     private int $inputIndex = 0;
 
     /**
      * @param list<string> $inputs
      */
     public function __construct(
-        array $inputs = [],
+        private readonly array $inputs = [],
     ) {
-        $this->inputs = $inputs;
     }
 
     public function write(string $text): void
