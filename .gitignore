@@ -11,5 +11,7 @@
 CLAUDE.local.md
 .ddev/config.local.yaml
 
+.workspace/
+
 # Build artifacts
 *.phar
