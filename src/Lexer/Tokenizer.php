@@ -14,10 +14,14 @@ final class Tokenizer
 
     private int $line = 1;
 
-    /** @var list<Token> */
+    /**
+     * @var list<Token>
+     */
     private array $tokens = [];
 
-    /** @var array<string, TokenType> */
+    /**
+     * @var array<string, TokenType>
+     */
     private const array KEYWORDS = [
         'algoritmo'       => TokenType::ALGORITMO,
         'ate'             => TokenType::ATE,
@@ -63,11 +67,14 @@ final class Tokenizer
         'vetor'           => TokenType::VETOR,
     ];
 
-    public function __construct(private readonly string $source)
-    {
+    public function __construct(
+        private readonly string $source,
+    ) {
     }
 
-    /** @return list<Token> */
+    /**
+     * @return list<Token>
+     */
     public function tokenize(): array
     {
         while (! $this->isAtEnd()) {
@@ -280,7 +287,7 @@ final class Tokenizer
         }
 
         $lexeme = substr($this->source, $this->start, $this->current - $this->start);
-        $type   = self::KEYWORDS[strtolower($lexeme)] ?? TokenType::IDENTIFIER;
+        $type = self::KEYWORDS[strtolower($lexeme)] ?? TokenType::IDENTIFIER;
 
         $value = match ($type) {
             TokenType::VERDADEIRO => true,

@@ -49,6 +49,19 @@ Target PHP 8.5. Use modern features freely:
 - Union types with spaces: `string | int | null` not `string|int|null` (enforced by Pint)
 - Space after negation: `! $var` not `!$var` (enforced by Pint)
 - Blank line between class properties (enforced by Pint)
+- Constructors always use multiline parameter format, even with a single parameter — trailing comma required (not enforced by Pint, apply manually):
+  ```php
+  // correct
+  public function __construct(
+      private readonly string $source,
+  ) {
+  }
+
+  // wrong
+  public function __construct(private readonly string $source)
+  {
+  }
+  ```
 
 ## PHPDoc
 
