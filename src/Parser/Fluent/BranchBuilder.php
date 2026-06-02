@@ -11,6 +11,9 @@ use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\IfNode;
 
+/**
+ * @internal Use Syntax::branch() or Syntax::se() instead.
+ */
 final class BranchBuilder
 {
     use HasCondition;

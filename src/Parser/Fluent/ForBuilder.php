@@ -10,6 +10,9 @@ use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\ForNode;
 
+/**
+ * @internal Use Syntax::forLoop() or Syntax::para() instead.
+ */
 final class ForBuilder
 {
     use HasForRange;

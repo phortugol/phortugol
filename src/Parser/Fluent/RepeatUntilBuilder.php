@@ -10,6 +10,9 @@ use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\RepeatUntilNode;
 
+/**
+ * @internal Use Syntax::repeatUntil() or Syntax::repita() instead.
+ */
 final class RepeatUntilBuilder
 {
     use HasCondition;

@@ -10,6 +10,9 @@ use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\WhileNode;
 
+/**
+ * @internal Use Syntax::loop() or Syntax::enquanto() instead.
+ */
 final class LoopBuilder
 {
     use HasCondition;
