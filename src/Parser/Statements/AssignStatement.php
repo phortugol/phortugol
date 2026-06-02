@@ -9,6 +9,7 @@ use Phortugol\Contracts\Parser\Statement;
 use Phortugol\Enums\TokenType;
 use Phortugol\Parser\Nodes\ArrayAssignNode;
 use Phortugol\Parser\Nodes\AssignNode;
+use Phortugol\Parser\Nodes\CallNode;
 use Phortugol\Parser\Parser;
 
 final class AssignStatement implements Statement
@@ -23,6 +24,22 @@ final class AssignStatement implements Statement
             $parser->stream->consume(type: TokenType::ASSIGN, message: 'Expected "<-" or ":=" after index');
 
             return new ArrayAssignNode($name->lexeme, $index, $parser->expression());
+        }
+
+        if ($parser->stream->match(TokenType::LEFT_PAREN)) {
+            $arguments = [];
+
+            if (! $parser->stream->check(TokenType::RIGHT_PAREN)) {
+                $arguments[] = $parser->expression();
+
+                while ($parser->stream->match(TokenType::COMMA)) {
+                    $arguments[] = $parser->expression();
+                }
+            }
+
+            $parser->stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after arguments');
+
+            return new CallNode($name->lexeme, $arguments);
         }
 
         $parser->stream->consume(type: TokenType::ASSIGN, message: 'Expected "<-" or ":=" after variable name');

@@ -13,12 +13,16 @@ use Phortugol\Interpreter\Executors\ArrayDeclExecutor;
 use Phortugol\Interpreter\Executors\AssignExecutor;
 use Phortugol\Interpreter\Executors\BinaryExecutor;
 use Phortugol\Interpreter\Executors\BreakExecutor;
+use Phortugol\Interpreter\Executors\CallExecutor;
 use Phortugol\Interpreter\Executors\ForExecutor;
+use Phortugol\Interpreter\Executors\FunctionExecutor;
 use Phortugol\Interpreter\Executors\IfExecutor;
 use Phortugol\Interpreter\Executors\LiteralExecutor;
+use Phortugol\Interpreter\Executors\ProcedureExecutor;
 use Phortugol\Interpreter\Executors\ProgramExecutor;
 use Phortugol\Interpreter\Executors\ReadExecutor;
 use Phortugol\Interpreter\Executors\RepeatUntilExecutor;
+use Phortugol\Interpreter\Executors\ReturnExecutor;
 use Phortugol\Interpreter\Executors\SwitchExecutor;
 use Phortugol\Interpreter\Executors\UnaryExecutor;
 use Phortugol\Interpreter\Executors\VariableExecutor;
@@ -30,12 +34,16 @@ use Phortugol\Parser\Nodes\ArrayDeclNode;
 use Phortugol\Parser\Nodes\AssignNode;
 use Phortugol\Parser\Nodes\BinaryNode;
 use Phortugol\Parser\Nodes\BreakNode;
+use Phortugol\Parser\Nodes\CallNode;
 use Phortugol\Parser\Nodes\ForNode;
+use Phortugol\Parser\Nodes\FunctionNode;
 use Phortugol\Parser\Nodes\IfNode;
 use Phortugol\Parser\Nodes\LiteralNode;
+use Phortugol\Parser\Nodes\ProcedureNode;
 use Phortugol\Parser\Nodes\ProgramNode;
 use Phortugol\Parser\Nodes\ReadNode;
 use Phortugol\Parser\Nodes\RepeatUntilNode;
+use Phortugol\Parser\Nodes\ReturnNode;
 use Phortugol\Parser\Nodes\SwitchNode;
 use Phortugol\Parser\Nodes\UnaryNode;
 use Phortugol\Parser\Nodes\VariableNode;
@@ -72,6 +80,10 @@ final readonly class ExecutorDispatcher
             ->register(class: ArrayDeclNode::class, executor: new ArrayDeclExecutor())
             ->register(class: ArrayAccessNode::class, executor: new ArrayAccessExecutor())
             ->register(class: ArrayAssignNode::class, executor: new ArrayAssignExecutor())
+            ->register(class: ProcedureNode::class, executor: new ProcedureExecutor())
+            ->register(class: FunctionNode::class, executor: new FunctionExecutor())
+            ->register(class: CallNode::class, executor: new CallExecutor())
+            ->register(class: ReturnNode::class, executor: new ReturnExecutor())
         ;
     }
 

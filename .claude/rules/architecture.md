@@ -78,6 +78,18 @@ Names must be **clear and beautiful to read** — a name that requires a comment
 - Traits may depend on other traits and on project-internal types (e.g., `TokenStream`, `Node`) — the package is self-contained, so internal coupling inside `src/` is acceptable
 - Traits must never import from `Illuminate\`, `Symfony\`, or any framework namespace
 
+## Parser — no `parse*` methods allowed
+
+The `Parser` class must never contain methods prefixed with `parse`. The class name already implies parsing — a method called `parseProcedure()` inside `Parser` is redundant by definition.
+
+Every parsing concern must be extracted to a dedicated class:
+
+- **Statements** (`Parser\Statements\`) — constructs that appear inside the main block (after `inicio`). Implement `Contracts\Parser\Statement` (`__invoke(Parser $parser): Node`).
+- **Declarations** (`Parser\Declarations\`) — constructs that appear before `inicio` (subroutines). Implement `Contracts\Parser\Declaration` (`__invoke(Parser $parser): Node`).
+- **Section parsers** (e.g., `Parser\VarSection`) — sections of the program structure that return a list of nodes. Receive their dependency via constructor and expose a `parse()` method, mirroring the `Expression` pattern.
+
+Even when the gain feels minimal, always create the class. Keeping logic inside `Parser` as private methods is not allowed.
+
 ## Strict Boundaries
 
 - `src/` must never import from `Illuminate\`, `Symfony\`, or any framework namespace

@@ -9,6 +9,7 @@ use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\ParseException;
 use Phortugol\Parser\Fluent\Syntax;
 use Phortugol\Parser\Nodes\ArrayAccessNode;
+use Phortugol\Parser\Nodes\CallNode;
 use Phortugol\Parser\Nodes\VariableNode;
 use Phortugol\Parser\TokenStream;
 
@@ -32,6 +33,22 @@ trait EvaluatesPrimary
                 $this->stream->consume(type: TokenType::RIGHT_BRACKET, message: 'Expected "]" after index');
 
                 return new ArrayAccessNode($token->lexeme, $index);
+            }
+
+            if ($this->stream->match(TokenType::LEFT_PAREN)) {
+                $arguments = [];
+
+                if (! $this->stream->check(TokenType::RIGHT_PAREN)) {
+                    $arguments[] = $this->parse();
+
+                    while ($this->stream->match(TokenType::COMMA)) {
+                        $arguments[] = $this->parse();
+                    }
+                }
+
+                $this->stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after arguments');
+
+                return new CallNode($token->lexeme, $arguments);
             }
 
             return new VariableNode($token->lexeme);

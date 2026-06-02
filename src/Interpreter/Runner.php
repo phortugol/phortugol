@@ -39,4 +39,17 @@ final class Runner
     {
         return $this->dispatcher->dispatch($node, $this);
     }
+
+    public function withEnvironment(Environment $environment, callable $callback): mixed
+    {
+        $previous = $this->env;
+
+        $this->env = $environment;
+
+        try {
+            return $callback();
+        } finally {
+            $this->env = $previous;
+        }
+    }
 }
