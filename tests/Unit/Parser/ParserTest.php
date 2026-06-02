@@ -23,45 +23,43 @@ function parseSource(string $body): ProgramNode
 it('parses escreva as WriteNode without newline', function (): void {
     $ast = parseSource('escreva "hello"');
 
-    expect($ast->statements[0])->toEqual(Nodes::write([Nodes::literal('hello')]));
+    expect($ast->statements[0])->toEqual(Nodes::write('hello'));
 });
 
 it('parses escreval as WriteNode with newline', function (): void {
     $ast = parseSource('escreval "hello"');
 
-    expect($ast->statements[0])->toEqual(Nodes::writeln([Nodes::literal('hello')]));
+    expect($ast->statements[0])->toEqual(Nodes::writeln('hello'));
 });
 
 it('parses escreva with parentheses', function (): void {
     $ast = parseSource('escreva("hello")');
 
-    expect($ast->statements[0])->toEqual(Nodes::write([Nodes::literal('hello')]));
+    expect($ast->statements[0])->toEqual(Nodes::write('hello'));
 });
 
 it('parses escreva with multiple expressions', function (): void {
     $ast = parseSource('escreva "a", "b", "c"');
 
-    expect($ast->statements[0])->toEqual(
-        Nodes::write([Nodes::literal('a'), Nodes::literal('b'), Nodes::literal('c')]),
-    );
+    expect($ast->statements[0])->toEqual(Nodes::write('a', 'b', 'c'));
 });
 
 it('parses leia as ReadNode', function (): void {
     $ast = parseSource('leia x');
 
-    expect($ast->statements[0])->toEqual(Nodes::read(['x']));
+    expect($ast->statements[0])->toEqual(Nodes::read('x'));
 });
 
 it('parses leia with multiple variables', function (): void {
     $ast = parseSource('leia x, y, z');
 
-    expect($ast->statements[0])->toEqual(Nodes::read(['x', 'y', 'z']));
+    expect($ast->statements[0])->toEqual(Nodes::read('x', 'y', 'z'));
 });
 
 it('parses leia with parentheses', function (): void {
     $ast = parseSource('leia(x)');
 
-    expect($ast->statements[0])->toEqual(Nodes::read(['x']));
+    expect($ast->statements[0])->toEqual(Nodes::read('x'));
 });
 
 it('parses assignment with arrow operator', function (): void {
@@ -85,7 +83,7 @@ it('parses se/fimse without senao', function (): void {
 
     expect($ast->statements[0])->toEqual(
         Nodes::branch()->true()
-            ->then(Nodes::write([Nodes::literal('yes')]))
+            ->then(Nodes::write('yes'))
             ->create(),
     );
 });
@@ -101,8 +99,8 @@ it('parses se/senao/fimse', function (): void {
 
     expect($ast->statements[0])->toEqual(
         Nodes::branch()->true()
-            ->then(Nodes::write([Nodes::literal('yes')]))
-            ->otherwise(Nodes::write([Nodes::literal('no')]))
+            ->then(Nodes::write('yes'))
+            ->otherwise(Nodes::write('no'))
             ->create(),
     );
 });
@@ -116,7 +114,7 @@ it('parses enquanto/fimenquanto', function (): void {
 
     expect($ast->statements[0])->toEqual(
         Nodes::loop()->false()
-            ->body(Nodes::write([Nodes::literal('loop')]))
+            ->body(Nodes::write('loop'))
             ->create(),
     );
 });
@@ -160,7 +158,7 @@ it('parses para/fimpara without passo', function (): void {
 
     expect($ast->statements[0])->toEqual(
         Nodes::forLoop('i')->from(1)->to(5)
-            ->body(Nodes::write([Nodes::variable('i')]))
+            ->body(Nodes::write(Nodes::variable('i')))
             ->create(),
     );
 });
@@ -174,7 +172,7 @@ it('parses para/fimpara with passo', function (): void {
 
     expect($ast->statements[0])->toEqual(
         Nodes::forLoop('i')->from(0)->to(10)->step(2)
-            ->body(Nodes::write([Nodes::variable('i')]))
+            ->body(Nodes::write(Nodes::variable('i')))
             ->create(),
     );
 });
@@ -188,7 +186,7 @@ it('parses repita/ate', function (): void {
 
     expect($ast->statements[0])->toEqual(
         Nodes::repeatUntil()->true()
-            ->body(Nodes::write([Nodes::literal('loop')]))
+            ->body(Nodes::write('loop'))
             ->create(),
     );
 });
@@ -248,5 +246,5 @@ it('parses program with var section', function (): void {
 
     $ast = new Parser(new Tokenizer($source)->tokenize())->parse();
 
-    expect($ast->statements[0])->toEqual(Nodes::write([Nodes::literal('hello')]));
+    expect($ast->statements[0])->toEqual(Nodes::write('hello'));
 });

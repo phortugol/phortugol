@@ -79,36 +79,24 @@ final class Nodes
         return new RepeatUntilBuilder();
     }
 
-    /**
-     * @param list<string> $identifiers
-     */
-    public static function read(array $identifiers): ReadNode
+    public static function read(string ...$identifiers): ReadNode
     {
-        return new ReadNode($identifiers);
+        return new ReadNode(array_values($identifiers));
     }
 
-    /**
-     * @param list<Node> $expressions
-     */
-    public static function write(array $expressions): WriteNode
+    public static function write(Node | int | float | string | bool ...$expressions): WriteNode
     {
-        return new WriteNode($expressions, newline: false);
+        return new WriteNode(array_values(array_map(self::coerce(...), $expressions)), newline: false);
     }
 
-    /**
-     * @param list<Node> $expressions
-     */
-    public static function writeln(array $expressions): WriteNode
+    public static function writeln(Node | int | float | string | bool ...$expressions): WriteNode
     {
-        return new WriteNode($expressions, newline: true);
+        return new WriteNode(array_values(array_map(self::coerce(...), $expressions)), newline: true);
     }
 
-    /**
-     * @param list<Node> $statements
-     */
-    public static function program(array $statements): ProgramNode
+    public static function program(Node ...$statements): ProgramNode
     {
-        return new ProgramNode($statements);
+        return new ProgramNode(array_values($statements));
     }
 
     // ── Portuguese API ───────────────────────────────────────────────────────
@@ -163,35 +151,30 @@ final class Nodes
         return new RepeatUntilBuilder();
     }
 
-    /**
-     * @param list<string> $identifiers
-     */
-    public static function leia(array $identifiers): ReadNode
+    public static function leia(string ...$identifiers): ReadNode
     {
-        return new ReadNode($identifiers);
+        return new ReadNode(array_values($identifiers));
     }
 
-    /**
-     * @param list<Node> $expressions
-     */
-    public static function escreva(array $expressions): WriteNode
+    public static function escreva(Node | int | float | string | bool ...$expressions): WriteNode
     {
-        return new WriteNode($expressions, newline: false);
+        return new WriteNode(array_values(array_map(self::coerce(...), $expressions)), newline: false);
     }
 
-    /**
-     * @param list<Node> $expressions
-     */
-    public static function escreval(array $expressions): WriteNode
+    public static function escreval(Node | int | float | string | bool ...$expressions): WriteNode
     {
-        return new WriteNode($expressions, newline: true);
+        return new WriteNode(array_values(array_map(self::coerce(...), $expressions)), newline: true);
     }
 
-    /**
-     * @param list<Node> $statements
-     */
-    public static function algoritmo(array $statements): ProgramNode
+    public static function algoritmo(Node ...$statements): ProgramNode
     {
-        return new ProgramNode($statements);
+        return new ProgramNode(array_values($statements));
+    }
+
+    // ── Internal ─────────────────────────────────────────────────────────────
+
+    private static function coerce(Node | int | float | string | bool $value): Node
+    {
+        return $value instanceof Node ? $value : new LiteralNode($value);
     }
 }
