@@ -2,26 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Support\Parser;
+namespace Phortugol\Parser\Fluent;
 
-use Phortugol\Concerns\Support\Parser\CanBeFalse;
-use Phortugol\Concerns\Support\Parser\CanBeLiteral;
-use Phortugol\Concerns\Support\Parser\CanBeTrue;
-use Phortugol\Concerns\Support\Parser\CanBeVariable;
-use Phortugol\Concerns\Support\Parser\CanWhen;
-use Phortugol\Concerns\Support\Parser\HasBody;
+use Phortugol\Concerns\Parser\Fluent\HasCondition;
+use Phortugol\Concerns\Parser\Fluent\HasLoopBody;
+use Phortugol\Concerns\Parser\Fluent\HasPortugueseCondition;
+use Phortugol\Concerns\Parser\Fluent\HasPortugueseLoopBody;
 use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\WhileNode;
 
 final class LoopBuilder
 {
-    use CanBeTrue;
-    use CanBeFalse;
-    use CanBeLiteral;
-    use CanBeVariable;
-    use CanWhen;
-    use HasBody;
+    use HasCondition;
+    use HasLoopBody;
+    use HasPortugueseCondition;
+    use HasPortugueseLoopBody;
 
     private Node | null $condition = null;
 
@@ -29,6 +25,12 @@ final class LoopBuilder
      * @var list<Node>
      */
     private array $body = [];
+
+    public static function make(
+        Node | int | float | string | bool | null $condition = null,
+    ): LoopBuilder {
+        return new LoopBuilder($condition);
+    }
 
     public function __construct(
         Node | int | float | string | bool | null $condition = null,
@@ -38,7 +40,7 @@ final class LoopBuilder
         }
     }
 
-    public function build(): WhileNode
+    public function create(): WhileNode
     {
         return new WhileNode(
             $this->condition ?? throw new RuntimeException('Loop condition not set — call when(), true(), false(), literal(), or variable() before build()'),

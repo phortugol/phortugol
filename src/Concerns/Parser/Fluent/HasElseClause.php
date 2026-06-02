@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Concerns\Support\Parser;
+namespace Phortugol\Concerns\Parser\Fluent;
 
 use Phortugol\Contracts\Node;
 
 /**
  * @phpstan-property list<Node>|null $elseBranch
  */
-trait HasOtherwise
+trait HasElseClause
 {
     public function otherwise(Node ...$statements): static
     {

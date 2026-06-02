@@ -2,28 +2,24 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Support\Parser;
+namespace Phortugol\Parser\Fluent;
 
-use Phortugol\Concerns\Support\Parser\CanBeFalse;
-use Phortugol\Concerns\Support\Parser\CanBeLiteral;
-use Phortugol\Concerns\Support\Parser\CanBeTrue;
-use Phortugol\Concerns\Support\Parser\CanBeVariable;
-use Phortugol\Concerns\Support\Parser\CanWhen;
-use Phortugol\Concerns\Support\Parser\HasOtherwise;
-use Phortugol\Concerns\Support\Parser\HasThen;
+use Phortugol\Concerns\Parser\Fluent\HasCondition;
+use Phortugol\Concerns\Parser\Fluent\HasElseClause;
+use Phortugol\Concerns\Parser\Fluent\HasPortugueseBranchClauses;
+use Phortugol\Concerns\Parser\Fluent\HasPortugueseCondition;
+use Phortugol\Concerns\Parser\Fluent\HasThenClause;
 use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\IfNode;
 
 final class BranchBuilder
 {
-    use CanBeTrue;
-    use CanBeFalse;
-    use CanBeLiteral;
-    use CanBeVariable;
-    use CanWhen;
-    use HasThen;
-    use HasOtherwise;
+    use HasCondition;
+    use HasThenClause;
+    use HasElseClause;
+    use HasPortugueseCondition;
+    use HasPortugueseBranchClauses;
 
     private Node | null $condition = null;
 
@@ -37,6 +33,12 @@ final class BranchBuilder
      */
     private array | null $elseBranch = null;
 
+    public static function make(
+        Node | int | float | string | bool | null $condition = null,
+    ): BranchBuilder {
+        return new BranchBuilder($condition);
+    }
+
     public function __construct(
         Node | int | float | string | bool | null $condition = null,
     ) {
@@ -45,7 +47,7 @@ final class BranchBuilder
         }
     }
 
-    public function build(): IfNode
+    public function create(): IfNode
     {
         return new IfNode(
             $this->condition ?? throw new RuntimeException('Branch condition not set — call when(), true(), false(), literal(), or variable() before build()'),

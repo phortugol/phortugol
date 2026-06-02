@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Concerns\Support\Parser;
+namespace Phortugol\Concerns\Parser\Fluent;
 
 use Phortugol\Contracts\Node;
 use Phortugol\Parser\Nodes\LiteralNode;
@@ -10,11 +10,11 @@ use Phortugol\Parser\Nodes\LiteralNode;
 /**
  * @phpstan-property Node|null $condition
  */
-trait CanBeLiteral
+trait CanBeFalse
 {
-    public function literal(int | float | string | bool $value): static
+    public function false(): static
     {
-        $this->condition = new LiteralNode($value);
+        $this->condition = new LiteralNode(false);
 
         return $this;
     }

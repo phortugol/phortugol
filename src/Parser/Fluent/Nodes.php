@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Support\Parser;
+namespace Phortugol\Parser\Fluent;
 
 use Phortugol\Contracts\Node;
 use Phortugol\Enums\TokenType;
@@ -31,6 +31,8 @@ final class Nodes
             default               => throw new ParseException("Cannot build node from token '{$token->lexeme}' at line {$token->line}"),
         };
     }
+
+    // ── English API ──────────────────────────────────────────────────────────
 
     public static function literal(int | float | string | bool $value): LiteralNode
     {
@@ -109,8 +111,87 @@ final class Nodes
         return new ProgramNode($statements);
     }
 
-    public static function native(): NativeNodes
+    // ── Portuguese API ───────────────────────────────────────────────────────
+
+    public static function verdadeiro(): LiteralNode
     {
-        return new NativeNodes();
+        return new LiteralNode(true);
+    }
+
+    public static function falso(): LiteralNode
+    {
+        return new LiteralNode(false);
+    }
+
+    public static function variavel(string $name): VariableNode
+    {
+        return new VariableNode($name);
+    }
+
+    public static function atribuir(string $name, Node $value): AssignNode
+    {
+        return new AssignNode($name, $value);
+    }
+
+    public static function binario(Node $left, TokenType $operator, Node $right): BinaryNode
+    {
+        return new BinaryNode($left, $operator, $right);
+    }
+
+    public static function unario(TokenType $operator, Node $right): UnaryNode
+    {
+        return new UnaryNode($operator, $right);
+    }
+
+    public static function se(Node | int | float | string | bool | null $condition = null): BranchBuilder
+    {
+        return new BranchBuilder($condition);
+    }
+
+    public static function enquanto(Node | int | float | string | bool | null $condition = null): LoopBuilder
+    {
+        return new LoopBuilder($condition);
+    }
+
+    public static function para(string $variable): ForBuilder
+    {
+        return new ForBuilder($variable);
+    }
+
+    public static function repita(): RepeatUntilBuilder
+    {
+        return new RepeatUntilBuilder();
+    }
+
+    /**
+     * @param list<string> $identifiers
+     */
+    public static function leia(array $identifiers): ReadNode
+    {
+        return new ReadNode($identifiers);
+    }
+
+    /**
+     * @param list<Node> $expressions
+     */
+    public static function escreva(array $expressions): WriteNode
+    {
+        return new WriteNode($expressions, newline: false);
+    }
+
+    /**
+     * @param list<Node> $expressions
+     */
+    public static function escreval(array $expressions): WriteNode
+    {
+        return new WriteNode($expressions, newline: true);
+    }
+
+    /**
+     * @param list<Node> $statements
+     */
+    public static function algoritmo(array $statements): ProgramNode
+    {
+        return new ProgramNode($statements);
     }
 }

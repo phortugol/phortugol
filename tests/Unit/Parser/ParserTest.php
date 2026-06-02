@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 use Phortugol\Enums\TokenType;
 use Phortugol\Lexer\Tokenizer;
+use Phortugol\Parser\Fluent\Nodes;
 use Phortugol\Parser\Nodes\ProgramNode;
 use Phortugol\Parser\Parser;
-use Phortugol\Support\Parser\Nodes;
 
 function parseSource(string $body): ProgramNode
 {
@@ -86,7 +86,7 @@ it('parses se/fimse without senao', function (): void {
     expect($ast->statements[0])->toEqual(
         Nodes::branch()->true()
             ->then(Nodes::write([Nodes::literal('yes')]))
-            ->build(),
+            ->create(),
     );
 });
 
@@ -103,7 +103,7 @@ it('parses se/senao/fimse', function (): void {
         Nodes::branch()->true()
             ->then(Nodes::write([Nodes::literal('yes')]))
             ->otherwise(Nodes::write([Nodes::literal('no')]))
-            ->build(),
+            ->create(),
     );
 });
 
@@ -117,7 +117,7 @@ it('parses enquanto/fimenquanto', function (): void {
     expect($ast->statements[0])->toEqual(
         Nodes::loop()->false()
             ->body(Nodes::write([Nodes::literal('loop')]))
-            ->build(),
+            ->create(),
     );
 });
 
@@ -161,7 +161,7 @@ it('parses para/fimpara without passo', function (): void {
     expect($ast->statements[0])->toEqual(
         Nodes::forLoop('i')->from(1)->to(5)
             ->body(Nodes::write([Nodes::variable('i')]))
-            ->build(),
+            ->create(),
     );
 });
 
@@ -175,7 +175,7 @@ it('parses para/fimpara with passo', function (): void {
     expect($ast->statements[0])->toEqual(
         Nodes::forLoop('i')->from(0)->to(10)->step(2)
             ->body(Nodes::write([Nodes::variable('i')]))
-            ->build(),
+            ->create(),
     );
 });
 
@@ -189,7 +189,7 @@ it('parses repita/ate', function (): void {
     expect($ast->statements[0])->toEqual(
         Nodes::repeatUntil()->true()
             ->body(Nodes::write([Nodes::literal('loop')]))
-            ->build(),
+            ->create(),
     );
 });
 

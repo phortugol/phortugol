@@ -2,26 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Support\Parser;
+namespace Phortugol\Parser\Fluent;
 
-use Phortugol\Concerns\Support\Parser\CanBeFalse;
-use Phortugol\Concerns\Support\Parser\CanBeLiteral;
-use Phortugol\Concerns\Support\Parser\CanBeTrue;
-use Phortugol\Concerns\Support\Parser\CanBeVariable;
-use Phortugol\Concerns\Support\Parser\CanWhen;
-use Phortugol\Concerns\Support\Parser\HasBody;
+use Phortugol\Concerns\Parser\Fluent\HasCondition;
+use Phortugol\Concerns\Parser\Fluent\HasLoopBody;
+use Phortugol\Concerns\Parser\Fluent\HasPortugueseCondition;
+use Phortugol\Concerns\Parser\Fluent\HasPortugueseLoopBody;
 use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\RepeatUntilNode;
 
 final class RepeatUntilBuilder
 {
-    use CanBeTrue;
-    use CanBeFalse;
-    use CanBeLiteral;
-    use CanBeVariable;
-    use CanWhen;
-    use HasBody;
+    use HasCondition;
+    use HasLoopBody;
+    use HasPortugueseCondition;
+    use HasPortugueseLoopBody;
 
     private Node | null $condition = null;
 
@@ -30,7 +26,12 @@ final class RepeatUntilBuilder
      */
     private array $body = [];
 
-    public function build(): RepeatUntilNode
+    public static function make(): RepeatUntilBuilder
+    {
+        return new RepeatUntilBuilder();
+    }
+
+    public function create(): RepeatUntilNode
     {
         return new RepeatUntilNode(
             $this->body,

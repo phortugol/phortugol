@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Phortugol\Concerns\Support\Parser;
+namespace Phortugol\Concerns\Parser\Fluent;
 
 use Phortugol\Contracts\Node;
 use Phortugol\Parser\Nodes\LiteralNode;

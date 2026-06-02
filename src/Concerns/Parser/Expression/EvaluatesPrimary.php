@@ -7,10 +7,10 @@ namespace Phortugol\Concerns\Parser\Expression;
 use Phortugol\Contracts\Node;
 use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\ParseException;
+use Phortugol\Parser\Fluent\Nodes;
 use Phortugol\Parser\Nodes\ArrayAccessNode;
 use Phortugol\Parser\Nodes\VariableNode;
 use Phortugol\Parser\TokenStream;
-use Phortugol\Support\Parser\Nodes;
 
 /**
  * @phpstan-method Node parse()
@@ -40,13 +40,13 @@ trait EvaluatesPrimary
         if ($this->stream->check(TokenType::VERDADEIRO)) {
             $this->stream->advance();
 
-            return Nodes::native()->verdadeiro();
+            return Nodes::verdadeiro();
         }
 
         if ($this->stream->check(TokenType::FALSO)) {
             $this->stream->advance();
 
-            return Nodes::native()->falso();
+            return Nodes::falso();
         }
 
         if ($this->stream->match(TokenType::LEFT_PAREN)) {
