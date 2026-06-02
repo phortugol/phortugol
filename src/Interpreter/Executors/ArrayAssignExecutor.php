@@ -20,20 +20,20 @@ final class ArrayAssignExecutor implements NodeExecutor
      */
     public function execute(Node $node, Runner $runner): null
     {
-        $arr = $runner->env->get($node->name);
+        $array = $runner->env->get($node->name);
 
-        if (! is_array($arr)) {
+        if (! is_array($array)) {
             throw new RuntimeException("Variable '{$node->name}' is not a vector");
         }
 
         $index = (int) $runner->execute($node->index);
 
-        if (! array_key_exists($index, $arr)) {
+        if (! array_key_exists($index, $array)) {
             throw new RuntimeException("Index {$index} out of bounds for vector '{$node->name}'");
         }
 
-        $arr[$index] = $runner->execute($node->value);
-        $runner->env->set($node->name, $arr);
+        $array[$index] = $runner->execute($node->value);
+        $runner->env->set($node->name, $array);
 
         return null;
     }

@@ -21,8 +21,8 @@ final class WriteExecutor implements NodeExecutor
     {
         $parts = [];
 
-        foreach ($node->expressions as $expr) {
-            $parts[] = $this->stringify($runner->execute($expr));
+        foreach ($node->expressions as $expression) {
+            $parts[] = $this->stringify($runner->execute($expression));
         }
 
         $text = implode('', $parts);

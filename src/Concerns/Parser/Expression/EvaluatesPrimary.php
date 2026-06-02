@@ -50,10 +50,10 @@ trait EvaluatesPrimary
         }
 
         if ($this->stream->match(TokenType::LEFT_PAREN)) {
-            $expr = $this->parse();
+            $expression = $this->parse();
             $this->stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after expression');
 
-            return $expr;
+            return $expression;
         }
 
         throw new ParseException("Unexpected token '{$this->stream->peek->lexeme}' at line {$this->stream->peek->line}");

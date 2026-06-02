@@ -20,18 +20,18 @@ final class ArrayAccessExecutor implements NodeExecutor
      */
     public function execute(Node $node, Runner $runner): mixed
     {
-        $arr = $runner->env->get($node->name);
+        $array = $runner->env->get($node->name);
 
-        if (! is_array($arr)) {
+        if (! is_array($array)) {
             throw new RuntimeException("Variable '{$node->name}' is not a vector");
         }
 
         $index = (int) $runner->execute($node->index);
 
-        if (! array_key_exists($index, $arr)) {
+        if (! array_key_exists($index, $array)) {
             throw new RuntimeException("Index {$index} out of bounds for vector '{$node->name}'");
         }
 
-        return $arr[$index];
+        return $array[$index];
     }
 }
