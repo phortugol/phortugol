@@ -3,6 +3,7 @@
 
 declare(strict_types = 1);
 
+use Phortugol\Console\Kernel;
 use Symfony\Component\Console\Input\ArgvInput;
 
 $vendorPath = dirname(__DIR__) . '/vendor/autoload.php';
@@ -21,6 +22,7 @@ if ($autoload === null) {
 
 require_once $autoload;
 
+/** @var Kernel $kernel */
 $kernel = require_once dirname(__DIR__) . '/bootstrap/terminal.php';
 
 exit($kernel->handle(new ArgvInput()));

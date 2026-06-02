@@ -11,6 +11,11 @@ use function Termwind\render;
 
 final class TermwindPresenter implements Presenter
 {
+    public function write(string $text): void
+    {
+        echo $text;
+    }
+
     public function info(string $message): void
     {
         $message = htmlspecialchars($message, ENT_QUOTES);

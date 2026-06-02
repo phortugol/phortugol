@@ -6,6 +6,8 @@ namespace Phortugol\Contracts\Console;
 
 interface Presenter
 {
+    public function write(string $text): void;
+
     public function info(string $message): void;
 
     public function error(string $message): void;

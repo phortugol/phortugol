@@ -16,7 +16,7 @@ final readonly class TerminalRuntime implements Runtime
 
     public function write(string $text): void
     {
-        echo $text;
+        $this->presenter->write($text);
     }
 
     public function read(): string

@@ -4,31 +4,28 @@ declare(strict_types = 1);
 
 namespace Phortugol\Console;
 
+use Phortugol\Console\Configuration\KernelBuilder;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final readonly class Kernel
 {
-    /**
-     * @param list<Command> $commands
-     */
     public function __construct(
-        private array $commands,
+        private Application $app,
     ) {
     }
 
-    public function handle(InputInterface $input): int
+    public static function configure(): KernelBuilder
     {
-        $app = new Application(name: 'Phortugol');
+        return new KernelBuilder()
+            ->withExtensions()
+            ->withPresenter()
+            ->withCommands();
+    }
 
-        foreach ($this->commands as $command) {
-            $app->addCommand($command);
-        }
-
-        $app->setDefaultCommand('run', true);
-        $app->setAutoExit(false);
-
-        return $app->run($input);
+    public function handle(InputInterface $input, OutputInterface | null $output = null): int
+    {
+        return $this->app->run($input, $output);
     }
 }

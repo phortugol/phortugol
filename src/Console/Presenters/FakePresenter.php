@@ -12,6 +12,11 @@ final class FakePresenter implements Presenter
     /**
      * @var list<string>
      */
+    public array $outputs = [];
+
+    /**
+     * @var list<string>
+     */
     public array $infos = [];
 
     /**
@@ -32,6 +37,11 @@ final class FakePresenter implements Presenter
     public function __construct(
         private readonly array $inputs = [],
     ) {
+    }
+
+    public function write(string $text): void
+    {
+        $this->outputs[] = $text;
     }
 
     public function info(string $message): void
