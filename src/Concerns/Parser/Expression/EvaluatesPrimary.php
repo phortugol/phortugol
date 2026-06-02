@@ -7,7 +7,7 @@ namespace Phortugol\Concerns\Parser\Expression;
 use Phortugol\Contracts\Node;
 use Phortugol\Enums\TokenType;
 use Phortugol\Exceptions\ParseException;
-use Phortugol\Parser\Fluent\Nodes;
+use Phortugol\Parser\Fluent\Syntax;
 use Phortugol\Parser\Nodes\ArrayAccessNode;
 use Phortugol\Parser\Nodes\VariableNode;
 use Phortugol\Parser\TokenStream;
@@ -21,7 +21,7 @@ trait EvaluatesPrimary
     protected function primary(): Node
     {
         if ($this->stream->checkAny([TokenType::INTEGER_LITERAL, TokenType::REAL_LITERAL, TokenType::STRING_LITERAL])) {
-            return Nodes::fromToken($this->stream->advance());
+            return Syntax::fromToken($this->stream->advance());
         }
 
         if ($this->stream->check(TokenType::IDENTIFIER)) {
@@ -40,13 +40,13 @@ trait EvaluatesPrimary
         if ($this->stream->check(TokenType::VERDADEIRO)) {
             $this->stream->advance();
 
-            return Nodes::verdadeiro();
+            return Syntax::verdadeiro();
         }
 
         if ($this->stream->check(TokenType::FALSO)) {
             $this->stream->advance();
 
-            return Nodes::falso();
+            return Syntax::falso();
         }
 
         if ($this->stream->match(TokenType::LEFT_PAREN)) {

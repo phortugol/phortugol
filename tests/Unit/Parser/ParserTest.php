@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 use Phortugol\Enums\TokenType;
 use Phortugol\Lexer\Tokenizer;
-use Phortugol\Parser\Fluent\Nodes;
+use Phortugol\Parser\Fluent\Syntax;
 use Phortugol\Parser\Nodes\ProgramNode;
 use Phortugol\Parser\Parser;
 
@@ -23,55 +23,55 @@ function parseSource(string $body): ProgramNode
 it('parses escreva as WriteNode without newline', function (): void {
     $ast = parseSource('escreva "hello"');
 
-    expect($ast->statements[0])->toEqual(Nodes::write('hello'));
+    expect($ast->statements[0])->toEqual(Syntax::write('hello'));
 });
 
 it('parses escreval as WriteNode with newline', function (): void {
     $ast = parseSource('escreval "hello"');
 
-    expect($ast->statements[0])->toEqual(Nodes::writeln('hello'));
+    expect($ast->statements[0])->toEqual(Syntax::writeln('hello'));
 });
 
 it('parses escreva with parentheses', function (): void {
     $ast = parseSource('escreva("hello")');
 
-    expect($ast->statements[0])->toEqual(Nodes::write('hello'));
+    expect($ast->statements[0])->toEqual(Syntax::write('hello'));
 });
 
 it('parses escreva with multiple expressions', function (): void {
     $ast = parseSource('escreva "a", "b", "c"');
 
-    expect($ast->statements[0])->toEqual(Nodes::write('a', 'b', 'c'));
+    expect($ast->statements[0])->toEqual(Syntax::write('a', 'b', 'c'));
 });
 
 it('parses leia as ReadNode', function (): void {
     $ast = parseSource('leia x');
 
-    expect($ast->statements[0])->toEqual(Nodes::read('x'));
+    expect($ast->statements[0])->toEqual(Syntax::read('x'));
 });
 
 it('parses leia with multiple variables', function (): void {
     $ast = parseSource('leia x, y, z');
 
-    expect($ast->statements[0])->toEqual(Nodes::read('x', 'y', 'z'));
+    expect($ast->statements[0])->toEqual(Syntax::read('x', 'y', 'z'));
 });
 
 it('parses leia with parentheses', function (): void {
     $ast = parseSource('leia(x)');
 
-    expect($ast->statements[0])->toEqual(Nodes::read('x'));
+    expect($ast->statements[0])->toEqual(Syntax::read('x'));
 });
 
 it('parses assignment with arrow operator', function (): void {
     $ast = parseSource('x <- 42');
 
-    expect($ast->statements[0])->toEqual(Nodes::assign('x', Nodes::literal(42)));
+    expect($ast->statements[0])->toEqual(Syntax::assign('x', Syntax::literal(42)));
 });
 
 it('parses assignment with colon-equals operator', function (): void {
     $ast = parseSource('x := 42');
 
-    expect($ast->statements[0])->toEqual(Nodes::assign('x', Nodes::literal(42)));
+    expect($ast->statements[0])->toEqual(Syntax::assign('x', Syntax::literal(42)));
 });
 
 it('parses se/fimse without senao', function (): void {
@@ -82,8 +82,8 @@ it('parses se/fimse without senao', function (): void {
         BODY);
 
     expect($ast->statements[0])->toEqual(
-        Nodes::branch()->true()
-            ->then(Nodes::write('yes'))
+        Syntax::branch()->true()
+            ->then(Syntax::write('yes'))
             ->create(),
     );
 });
@@ -98,9 +98,9 @@ it('parses se/senao/fimse', function (): void {
         BODY);
 
     expect($ast->statements[0])->toEqual(
-        Nodes::branch()->true()
-            ->then(Nodes::write('yes'))
-            ->otherwise(Nodes::write('no'))
+        Syntax::branch()->true()
+            ->then(Syntax::write('yes'))
+            ->otherwise(Syntax::write('no'))
             ->create(),
     );
 });
@@ -113,8 +113,8 @@ it('parses enquanto/fimenquanto', function (): void {
         BODY);
 
     expect($ast->statements[0])->toEqual(
-        Nodes::loop()->false()
-            ->body(Nodes::write('loop'))
+        Syntax::loop()->false()
+            ->body(Syntax::write('loop'))
             ->create(),
     );
 });
@@ -123,7 +123,7 @@ it('parses binary expression', function (): void {
     $ast = parseSource('x <- 1 + 2');
 
     expect($ast->statements[0])->toEqual(
-        Nodes::assign('x', Nodes::binary(Nodes::literal(1), TokenType::PLUS, Nodes::literal(2))),
+        Syntax::assign('x', Syntax::binary(Syntax::literal(1), TokenType::PLUS, Syntax::literal(2))),
     );
 });
 
@@ -131,21 +131,21 @@ it('parses unary minus', function (): void {
     $ast = parseSource('x <- -5');
 
     expect($ast->statements[0])->toEqual(
-        Nodes::assign('x', Nodes::unary(TokenType::MINUS, Nodes::literal(5))),
+        Syntax::assign('x', Syntax::unary(TokenType::MINUS, Syntax::literal(5))),
     );
 });
 
 it('parses variable reference', function (): void {
     $ast = parseSource('x <- y');
 
-    expect($ast->statements[0])->toEqual(Nodes::assign('x', Nodes::variable('y')));
+    expect($ast->statements[0])->toEqual(Syntax::assign('x', Syntax::variable('y')));
 });
 
 it('parses parenthesized expression', function (): void {
     $ast = parseSource('x <- (1 + 2)');
 
     expect($ast->statements[0])->toEqual(
-        Nodes::assign('x', Nodes::binary(Nodes::literal(1), TokenType::PLUS, Nodes::literal(2))),
+        Syntax::assign('x', Syntax::binary(Syntax::literal(1), TokenType::PLUS, Syntax::literal(2))),
     );
 });
 
@@ -157,8 +157,8 @@ it('parses para/fimpara without passo', function (): void {
         BODY);
 
     expect($ast->statements[0])->toEqual(
-        Nodes::forLoop('i')->from(1)->to(5)
-            ->body(Nodes::write(Nodes::variable('i')))
+        Syntax::forLoop('i')->from(1)->to(5)
+            ->body(Syntax::write(Syntax::variable('i')))
             ->create(),
     );
 });
@@ -171,8 +171,8 @@ it('parses para/fimpara with passo', function (): void {
         BODY);
 
     expect($ast->statements[0])->toEqual(
-        Nodes::forLoop('i')->from(0)->to(10)->step(2)
-            ->body(Nodes::write(Nodes::variable('i')))
+        Syntax::forLoop('i')->from(0)->to(10)->step(2)
+            ->body(Syntax::write(Syntax::variable('i')))
             ->create(),
     );
 });
@@ -185,8 +185,8 @@ it('parses repita/ate', function (): void {
         BODY);
 
     expect($ast->statements[0])->toEqual(
-        Nodes::repeatUntil()->true()
-            ->body(Nodes::write('loop'))
+        Syntax::repeatUntil()->true()
+            ->body(Syntax::write('loop'))
             ->create(),
     );
 });
@@ -246,5 +246,5 @@ it('parses program with var section', function (): void {
 
     $ast = new Parser(new Tokenizer($source)->tokenize())->parse();
 
-    expect($ast->statements[0])->toEqual(Nodes::write('hello'));
+    expect($ast->statements[0])->toEqual(Syntax::write('hello'));
 });

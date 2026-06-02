@@ -17,7 +17,7 @@ use Phortugol\Parser\Nodes\UnaryNode;
 use Phortugol\Parser\Nodes\VariableNode;
 use Phortugol\Parser\Nodes\WriteNode;
 
-final class Nodes
+final class Syntax
 {
     public static function fromToken(Token $token): Node
     {
