@@ -67,6 +67,16 @@ final class Nodes
         return new LoopBuilder($condition);
     }
 
+    public static function forLoop(string $variable): ForBuilder
+    {
+        return new ForBuilder($variable);
+    }
+
+    public static function repeatUntil(): RepeatUntilBuilder
+    {
+        return new RepeatUntilBuilder();
+    }
+
     /**
      * @param list<string> $identifiers
      */

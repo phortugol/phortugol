@@ -7,22 +7,36 @@ namespace Phortugol\Interpreter;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\NodeExecutor;
 use Phortugol\Exceptions\RuntimeException;
+use Phortugol\Interpreter\Executors\ArrayAccessExecutor;
+use Phortugol\Interpreter\Executors\ArrayAssignExecutor;
+use Phortugol\Interpreter\Executors\ArrayDeclExecutor;
 use Phortugol\Interpreter\Executors\AssignExecutor;
 use Phortugol\Interpreter\Executors\BinaryExecutor;
+use Phortugol\Interpreter\Executors\BreakExecutor;
+use Phortugol\Interpreter\Executors\ForExecutor;
 use Phortugol\Interpreter\Executors\IfExecutor;
 use Phortugol\Interpreter\Executors\LiteralExecutor;
 use Phortugol\Interpreter\Executors\ProgramExecutor;
 use Phortugol\Interpreter\Executors\ReadExecutor;
+use Phortugol\Interpreter\Executors\RepeatUntilExecutor;
+use Phortugol\Interpreter\Executors\SwitchExecutor;
 use Phortugol\Interpreter\Executors\UnaryExecutor;
 use Phortugol\Interpreter\Executors\VariableExecutor;
 use Phortugol\Interpreter\Executors\WhileExecutor;
 use Phortugol\Interpreter\Executors\WriteExecutor;
+use Phortugol\Parser\Nodes\ArrayAccessNode;
+use Phortugol\Parser\Nodes\ArrayAssignNode;
+use Phortugol\Parser\Nodes\ArrayDeclNode;
 use Phortugol\Parser\Nodes\AssignNode;
 use Phortugol\Parser\Nodes\BinaryNode;
+use Phortugol\Parser\Nodes\BreakNode;
+use Phortugol\Parser\Nodes\ForNode;
 use Phortugol\Parser\Nodes\IfNode;
 use Phortugol\Parser\Nodes\LiteralNode;
 use Phortugol\Parser\Nodes\ProgramNode;
 use Phortugol\Parser\Nodes\ReadNode;
+use Phortugol\Parser\Nodes\RepeatUntilNode;
+use Phortugol\Parser\Nodes\SwitchNode;
 use Phortugol\Parser\Nodes\UnaryNode;
 use Phortugol\Parser\Nodes\VariableNode;
 use Phortugol\Parser\Nodes\WhileNode;
@@ -51,6 +65,13 @@ final readonly class ExecutorDispatcher
             ->register(class: AssignNode::class, executor: new AssignExecutor())
             ->register(class: IfNode::class, executor: new IfExecutor())
             ->register(class: WhileNode::class, executor: new WhileExecutor())
+            ->register(class: ForNode::class, executor: new ForExecutor())
+            ->register(class: RepeatUntilNode::class, executor: new RepeatUntilExecutor())
+            ->register(class: SwitchNode::class, executor: new SwitchExecutor())
+            ->register(class: BreakNode::class, executor: new BreakExecutor())
+            ->register(class: ArrayDeclNode::class, executor: new ArrayDeclExecutor())
+            ->register(class: ArrayAccessNode::class, executor: new ArrayAccessExecutor())
+            ->register(class: ArrayAssignNode::class, executor: new ArrayAssignExecutor())
         ;
     }
 

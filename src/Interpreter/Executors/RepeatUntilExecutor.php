@@ -9,22 +9,22 @@ use Phortugol\Contracts\NodeExecutor;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Interpreter\BreakSignal;
 use Phortugol\Interpreter\Runner;
-use Phortugol\Parser\Nodes\WhileNode;
+use Phortugol\Parser\Nodes\RepeatUntilNode;
 
 /**
- * @implements NodeExecutor<WhileNode>
+ * @implements NodeExecutor<RepeatUntilNode>
  */
-final class WhileExecutor implements NodeExecutor
+final class RepeatUntilExecutor implements NodeExecutor
 {
     /**
-     * @param WhileNode $node
+     * @param RepeatUntilNode $node
      */
     public function execute(Node $node, Runner $runner): null
     {
         $iterations = 0;
 
         try {
-            while ((bool) $runner->execute($node->condition)) {
+            do {
                 if (++$iterations > 100_000) {
                     throw new RuntimeException('Loop exceeded 100,000 iterations');
                 }
@@ -32,7 +32,7 @@ final class WhileExecutor implements NodeExecutor
                 foreach ($node->body as $statement) {
                     $runner->execute($statement);
                 }
-            }
+            } while (! (bool) $runner->execute($node->condition));
         } catch (BreakSignal) {
             //
         }
