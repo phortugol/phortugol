@@ -21,7 +21,7 @@ use Phortugol\Parser\Statements\WriteStatement;
 
 final readonly class Parser
 {
-    private TokenStream $stream;
+    public TokenStream $stream;
 
     private Expression $expression;
 
@@ -78,18 +78,18 @@ final readonly class Parser
 
     private function statement(): Node
     {
-        return match (true) {
+        return (match (true) {
             $this->stream->check(TokenType::ESCREVA),
-            $this->stream->check(TokenType::ESCREVAL)   => new WriteStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::LEIA)       => new ReadStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::SE)         => new IfStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::ENQUANTO)   => new WhileStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::PARA)       => new ForStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::REPITA)     => new RepeatUntilStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::SEJA)       => new SwitchStatement()->parse($this->stream, $this),
-            $this->stream->check(TokenType::INTERROMPA) => new BreakStatement()->parse($this->stream, $this),
-            default                                     => new AssignStatement()->parse($this->stream, $this),
-        };
+            $this->stream->check(TokenType::ESCREVAL)   => new WriteStatement(),
+            $this->stream->check(TokenType::LEIA)       => new ReadStatement(),
+            $this->stream->check(TokenType::SE)         => new IfStatement(),
+            $this->stream->check(TokenType::ENQUANTO)   => new WhileStatement(),
+            $this->stream->check(TokenType::PARA)       => new ForStatement(),
+            $this->stream->check(TokenType::REPITA)     => new RepeatUntilStatement(),
+            $this->stream->check(TokenType::SEJA)       => new SwitchStatement(),
+            $this->stream->check(TokenType::INTERROMPA) => new BreakStatement(),
+            default                                     => new AssignStatement(),
+        })($this);
     }
 
     /**

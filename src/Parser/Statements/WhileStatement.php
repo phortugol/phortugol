@@ -8,19 +8,18 @@ use Phortugol\Contracts\Parser\Statement;
 use Phortugol\Enums\TokenType;
 use Phortugol\Parser\Nodes\WhileNode;
 use Phortugol\Parser\Parser;
-use Phortugol\Parser\TokenStream;
 
 final class WhileStatement implements Statement
 {
-    public function parse(TokenStream $stream, Parser $parser): WhileNode
+    public function __invoke(Parser $parser): WhileNode
     {
-        $stream->advance();
+        $parser->stream->advance();
         $condition = $parser->expression();
-        $stream->consume(type: TokenType::FACA, message: 'Expected "faca" after condition');
+        $parser->stream->consume(type: TokenType::FACA, message: 'Expected "faca" after condition');
 
         $body = $parser->block([TokenType::FIMENQUANTO]);
 
-        $stream->consume(type: TokenType::FIMENQUANTO, message: 'Expected "fimenquanto"');
+        $parser->stream->consume(type: TokenType::FIMENQUANTO, message: 'Expected "fimenquanto"');
 
         return new WhileNode($condition, $body);
     }

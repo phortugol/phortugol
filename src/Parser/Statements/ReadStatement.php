@@ -8,23 +8,22 @@ use Phortugol\Contracts\Parser\Statement;
 use Phortugol\Enums\TokenType;
 use Phortugol\Parser\Nodes\ReadNode;
 use Phortugol\Parser\Parser;
-use Phortugol\Parser\TokenStream;
 
 final class ReadStatement implements Statement
 {
-    public function parse(TokenStream $stream, Parser $parser): ReadNode
+    public function __invoke(Parser $parser): ReadNode
     {
-        $stream->advance();
+        $parser->stream->advance();
 
-        $hasParen = $stream->match(TokenType::LEFT_PAREN);
-        $identifiers = [$stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name')->lexeme];
+        $hasParen = $parser->stream->match(TokenType::LEFT_PAREN);
+        $identifiers = [$parser->stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name')->lexeme];
 
-        while ($stream->match(TokenType::COMMA)) {
-            $identifiers[] = $stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name')->lexeme;
+        while ($parser->stream->match(TokenType::COMMA)) {
+            $identifiers[] = $parser->stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name')->lexeme;
         }
 
         if ($hasParen) {
-            $stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after leia arguments');
+            $parser->stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after leia arguments');
         }
 
         return new ReadNode($identifiers);

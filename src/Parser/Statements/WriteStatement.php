@@ -8,24 +8,23 @@ use Phortugol\Contracts\Parser\Statement;
 use Phortugol\Enums\TokenType;
 use Phortugol\Parser\Nodes\WriteNode;
 use Phortugol\Parser\Parser;
-use Phortugol\Parser\TokenStream;
 
 final class WriteStatement implements Statement
 {
-    public function parse(TokenStream $stream, Parser $parser): WriteNode
+    public function __invoke(Parser $parser): WriteNode
     {
-        $newline = $stream->peek->type === TokenType::ESCREVAL;
-        $stream->advance();
+        $newline = $parser->stream->peek->type === TokenType::ESCREVAL;
+        $parser->stream->advance();
 
-        $hasParen = $stream->match(TokenType::LEFT_PAREN);
+        $hasParen = $parser->stream->match(TokenType::LEFT_PAREN);
         $expressions = [$parser->expression()];
 
-        while ($stream->match(TokenType::COMMA)) {
+        while ($parser->stream->match(TokenType::COMMA)) {
             $expressions[] = $parser->expression();
         }
 
         if ($hasParen) {
-            $stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after escreva arguments');
+            $parser->stream->consume(type: TokenType::RIGHT_PAREN, message: 'Expected ")" after escreva arguments');
         }
 
         return new WriteNode($expressions, $newline);

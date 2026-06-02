@@ -7,13 +7,12 @@ namespace Phortugol\Parser\Statements;
 use Phortugol\Contracts\Parser\Statement;
 use Phortugol\Parser\Nodes\BreakNode;
 use Phortugol\Parser\Parser;
-use Phortugol\Parser\TokenStream;
 
 final class BreakStatement implements Statement
 {
-    public function parse(TokenStream $stream, Parser $parser): BreakNode
+    public function __invoke(Parser $parser): BreakNode
     {
-        $stream->advance();
+        $parser->stream->advance();
 
         return new BreakNode();
     }
