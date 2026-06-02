@@ -8,66 +8,28 @@ use Phortugol\Console\Commands\RunCommand;
 use Phortugol\Console\Kernel;
 use Phortugol\Console\Presenters\TermwindPresenter;
 use Phortugol\Contracts\Console\Presenter;
-use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Interpreter\Runner;
 use Phortugol\Runtime\TerminalRuntime;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Command\Command;
 
 final class KernelBuilder
 {
-    /**
-     * @var list<string>
-     */
-    private array $extensions = [];
-
-    /**
-     * @var list<Command>
-     */
-    private array $commands = [];
-
-    private Runner | null $runner = null;
-
     private Presenter | null $presenter = null;
 
-    private Application $app;
-
     public function __construct(
-        Application | null $app = null,
+        private readonly Kernel $kernel,
     ) {
-        $this->app = $app ?? new Application(name: 'Phortugol');
     }
 
-    /**
-     * @param list<string> $extensions
-     */
-    public function withExtensions(array $extensions = ['alg', 'por', 'portugol']): KernelBuilder
+    public function withExtensions(): KernelBuilder
     {
-        $this->extensions = $extensions;
+        $this->kernel->extensions = ['alg', 'por', 'portugol'];
 
         return $this;
     }
 
-    /**
-     * @param list<Command> $commands
-     */
-    public function withCommands(array $commands = []): KernelBuilder
+    public function withRunner(): KernelBuilder
     {
-        if ($this->runner !== null && $this->presenter !== null) {
-            throw new RuntimeException('Cannot combine withRunner() and withPresenter(): the presenter is only used to build the default TerminalRuntime. Pass the presenter directly to your runtime instead.');
-        }
-
-        $presenter = $this->presenter ?? new TermwindPresenter();
-        $runner = $this->runner       ?? Runner::create(new TerminalRuntime($presenter));
-
-        $this->commands = [new RunCommand($runner, $this->extensions), ...$commands];
-
-        return $this;
-    }
-
-    public function withRunner(Runner $runner): KernelBuilder
-    {
-        $this->runner = $runner;
+        $this->kernel->runner = Runner::create(new TerminalRuntime($this->presenter ?? new TermwindPresenter()));
 
         return $this;
     }
@@ -79,17 +41,17 @@ final class KernelBuilder
         return $this;
     }
 
+    public function withCommands(): KernelBuilder
+    {
+        $this->kernel->addCommand(new RunCommand($this->kernel));
+
+        return $this;
+    }
+
     public function create(): Kernel
     {
-        $app = $this->app;
+        $this->kernel->boot();
 
-        foreach ($this->commands as $command) {
-            $app->addCommand($command);
-        }
-
-        $app->setDefaultCommand(commandName: 'run', isSingleCommand: true);
-        $app->setAutoExit(boolean: false);
-
-        return new Kernel($app);
+        return $this->kernel;
     }
 }

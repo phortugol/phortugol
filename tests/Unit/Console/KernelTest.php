@@ -3,8 +3,10 @@
 declare(strict_types = 1);
 
 use Phortugol\Console\Commands\RunCommand;
+use Phortugol\Console\Kernel;
 use Phortugol\Interpreter\Runner;
 use Phortugol\Runtime\FakeRuntime;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -18,7 +20,11 @@ function algFile(string $source): string
 
 function commandTester(): CommandTester
 {
-    return new CommandTester(new RunCommand(Runner::create(new FakeRuntime())));
+    $kernel = new Kernel(new Application());
+    $kernel->runner = Runner::create(new FakeRuntime());
+    $kernel->extensions = ['alg', 'por', 'portugol'];
+
+    return new CommandTester(new RunCommand($kernel));
 }
 
 // ---------------------------------------------------------------------------
