@@ -18,4 +18,9 @@ trait CanBeVariable
 
         return $this;
     }
+
+    public function variavel(string $name): static
+    {
+        return $this->variable($name);
+    }
 }

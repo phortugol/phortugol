@@ -18,4 +18,9 @@ trait CanBeFalse
 
         return $this;
     }
+
+    public function falso(): static
+    {
+        return $this->false();
+    }
 }

@@ -6,8 +6,6 @@ namespace Phortugol\Parser\Fluent;
 
 use Phortugol\Concerns\Parser\Fluent\HasCondition;
 use Phortugol\Concerns\Parser\Fluent\HasLoopBody;
-use Phortugol\Concerns\Parser\Fluent\HasPortugueseCondition;
-use Phortugol\Concerns\Parser\Fluent\HasPortugueseLoopBody;
 use Phortugol\Contracts\Node;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Parser\Nodes\RepeatUntilNode;
@@ -16,8 +14,6 @@ final class RepeatUntilBuilder
 {
     use HasCondition;
     use HasLoopBody;
-    use HasPortugueseCondition;
-    use HasPortugueseLoopBody;
 
     private Node | null $condition = null;
 
@@ -35,7 +31,7 @@ final class RepeatUntilBuilder
     {
         return new RepeatUntilNode(
             $this->body,
-            $this->condition ?? throw new RuntimeException('RepeatUntilBuilder: call when(), true(), false(), literal(), or variable() before build()'),
+            $this->condition ?? throw new RuntimeException('RepeatUntilBuilder: call when(), true(), false(), literal(), or variable() before create()'),
         );
     }
 }

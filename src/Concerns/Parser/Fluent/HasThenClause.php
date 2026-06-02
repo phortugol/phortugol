@@ -17,4 +17,9 @@ trait HasThenClause
 
         return $this;
     }
+
+    public function entao(Node ...$statements): static
+    {
+        return $this->then(...$statements);
+    }
 }

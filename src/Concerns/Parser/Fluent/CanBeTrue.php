@@ -18,4 +18,9 @@ trait CanBeTrue
 
         return $this;
     }
+
+    public function verdadeiro(): static
+    {
+        return $this->true();
+    }
 }

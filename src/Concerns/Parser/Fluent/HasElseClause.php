@@ -17,4 +17,9 @@ trait HasElseClause
 
         return $this;
     }
+
+    public function senao(Node ...$statements): static
+    {
+        return $this->otherwise(...$statements);
+    }
 }

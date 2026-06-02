@@ -17,4 +17,9 @@ trait HasLoopBody
 
         return $this;
     }
+
+    public function faca(Node ...$statements): static
+    {
+        return $this->body(...$statements);
+    }
 }

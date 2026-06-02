@@ -19,4 +19,9 @@ trait CanWhen
 
         return $this;
     }
+
+    public function quando(Node | int | float | string | bool $condition): static
+    {
+        return $this->when($condition);
+    }
 }
