@@ -7,15 +7,15 @@ namespace Phortugol\Interpreter\Executors;
 use Phortugol\Contracts\Node;
 use Phortugol\Contracts\NodeExecutor;
 use Phortugol\Interpreter\Runner;
-use Phortugol\Parser\Nodes\ArrayDeclNode;
+use Phortugol\Parser\Nodes\ArrayDeclarationNode;
 
 /**
- * @implements NodeExecutor<ArrayDeclNode>
+ * @implements NodeExecutor<ArrayDeclarationNode>
  */
-final class ArrayDeclExecutor implements NodeExecutor
+final class ArrayDeclarationExecutor implements NodeExecutor
 {
     /**
-     * @param ArrayDeclNode $node
+     * @param ArrayDeclarationNode $node
      */
     public function execute(Node $node, Runner $runner): null
     {
