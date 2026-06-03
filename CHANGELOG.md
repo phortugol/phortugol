@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-06-02
+
+### Fixed
+
+- `senao se` (else-if) chains now correctly close with a single `fimse`
+- `%` is now recognized as the modulo operator (alias for `mod`)
+- Multiple variable declarations on the same line (`n, i: inteiro`) are now parsed correctly
+
 ## [0.1.0] - 2026-06-02
 
 ### Added
