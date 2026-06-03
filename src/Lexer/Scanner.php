@@ -138,6 +138,7 @@ final class Scanner
             '+'                   => [TokenType::PLUS, null],
             '-'                   => [TokenType::MINUS, null],
             '*'                   => [TokenType::STAR, null],
+            '%'                   => [TokenType::MOD, null],
             '='                   => [TokenType::EQUAL, null],
             '/'                   => $this->slash(),
             '<'                   => $this->less(),
