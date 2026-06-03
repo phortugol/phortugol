@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Phortugol\Parser;
 
 use Phortugol\Enums\TokenType;
-use Phortugol\Parser\Nodes\ArrayDeclNode;
+use Phortugol\Parser\Nodes\ArrayDeclarationNode;
 
 final readonly class VarSection
 {
@@ -15,7 +15,7 @@ final readonly class VarSection
     }
 
     /**
-     * @return list<ArrayDeclNode>
+     * @return list<ArrayDeclarationNode>
      */
     public function parse(): array
     {
@@ -52,7 +52,7 @@ final readonly class VarSection
                 $this->parser->stream->advance();
 
                 foreach ($names as $name) {
-                    $declarations[] = new ArrayDeclNode($name->lexeme, $start, $end);
+                    $declarations[] = new ArrayDeclarationNode($name->lexeme, $start, $end);
                 }
             } else {
                 $this->parser->stream->advance();
