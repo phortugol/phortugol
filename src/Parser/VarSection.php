@@ -34,7 +34,12 @@ final readonly class VarSection
                 continue;
             }
 
-            $name = $this->parser->stream->advance();
+            $names = [$this->parser->stream->advance()];
+
+            while ($this->parser->stream->match(TokenType::COMMA)) {
+                $names[] = $this->parser->stream->consume(type: TokenType::IDENTIFIER, message: 'Expected variable name after ","');
+            }
+
             $this->parser->stream->consume(type: TokenType::COLON, message: 'Expected ":" after variable name');
 
             if ($this->parser->stream->match(TokenType::VETOR)) {
@@ -45,7 +50,10 @@ final readonly class VarSection
                 $this->parser->stream->consume(type: TokenType::RIGHT_BRACKET, message: 'Expected "]" after vector range');
                 $this->parser->stream->consume(type: TokenType::DE, message: 'Expected "de" after vector range');
                 $this->parser->stream->advance();
-                $declarations[] = new ArrayDeclNode($name->lexeme, $start, $end);
+
+                foreach ($names as $name) {
+                    $declarations[] = new ArrayDeclNode($name->lexeme, $start, $end);
+                }
             } else {
                 $this->parser->stream->advance();
             }
