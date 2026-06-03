@@ -22,6 +22,12 @@ final class IfStatement implements Statement
         $elseBranch = null;
 
         if ($parser->stream->match(TokenType::SENAO)) {
+            if ($parser->stream->check(TokenType::SE)) {
+                $elseBranch = [($this)($parser)];
+
+                return new IfNode($condition, $thenBranch, $elseBranch);
+            }
+
             $elseBranch = $parser->block([TokenType::FIMSE]);
         }
 
