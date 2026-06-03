@@ -6,7 +6,7 @@ namespace Phortugol\Parser\Nodes;
 
 use Phortugol\Contracts\Node;
 
-final readonly class ArrayDeclNode implements Node
+final readonly class ArrayDeclarationNode implements Node
 {
     public function __construct(
         public string $name,

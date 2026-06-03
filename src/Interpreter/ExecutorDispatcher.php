@@ -9,7 +9,7 @@ use Phortugol\Contracts\NodeExecutor;
 use Phortugol\Exceptions\RuntimeException;
 use Phortugol\Interpreter\Executors\ArrayAccessExecutor;
 use Phortugol\Interpreter\Executors\ArrayAssignExecutor;
-use Phortugol\Interpreter\Executors\ArrayDeclExecutor;
+use Phortugol\Interpreter\Executors\ArrayDeclarationExecutor;
 use Phortugol\Interpreter\Executors\AssignExecutor;
 use Phortugol\Interpreter\Executors\BinaryExecutor;
 use Phortugol\Interpreter\Executors\BreakExecutor;
@@ -30,7 +30,7 @@ use Phortugol\Interpreter\Executors\WhileExecutor;
 use Phortugol\Interpreter\Executors\WriteExecutor;
 use Phortugol\Parser\Nodes\ArrayAccessNode;
 use Phortugol\Parser\Nodes\ArrayAssignNode;
-use Phortugol\Parser\Nodes\ArrayDeclNode;
+use Phortugol\Parser\Nodes\ArrayDeclarationNode;
 use Phortugol\Parser\Nodes\AssignNode;
 use Phortugol\Parser\Nodes\BinaryNode;
 use Phortugol\Parser\Nodes\BreakNode;
@@ -77,7 +77,7 @@ final readonly class ExecutorDispatcher
             ->register(class: RepeatUntilNode::class, executor: new RepeatUntilExecutor())
             ->register(class: SwitchNode::class, executor: new SwitchExecutor())
             ->register(class: BreakNode::class, executor: new BreakExecutor())
-            ->register(class: ArrayDeclNode::class, executor: new ArrayDeclExecutor())
+            ->register(class: ArrayDeclarationNode::class, executor: new ArrayDeclarationExecutor())
             ->register(class: ArrayAccessNode::class, executor: new ArrayAccessExecutor())
             ->register(class: ArrayAssignNode::class, executor: new ArrayAssignExecutor())
             ->register(class: ProcedureNode::class, executor: new ProcedureExecutor())
